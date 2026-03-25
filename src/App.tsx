@@ -48,6 +48,7 @@ function ProtectedRoutes() {
           <Route path="/herramientas/entorno" element={<EntornoPage />} />
           <Route path="/herramientas/guiones" element={<GuionesPage />} />
           <Route path="/herramientas/captacion" element={<CaptacionPage />} />
+          <Route path="/herramientas/home-staging" element={<HomeStagingPage />} />
           <Route path="/herramientas/:toolId" element={<ToolPlaceholder />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

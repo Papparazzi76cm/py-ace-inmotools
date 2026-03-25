@@ -30,7 +30,7 @@ export const tools: Tool[] = [
     icon: Image,
     path: "/herramientas/home-staging",
     category: "comercializacion",
-    ready: false,
+    ready: true,
   },
   {
     id: "descripciones",
