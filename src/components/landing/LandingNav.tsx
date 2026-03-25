@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Sparkles } from "lucide-react";
+import PynmoLogo from "@/components/PynmoLogo";
 
 interface LandingNavProps {
   onGetStarted: () => void;
