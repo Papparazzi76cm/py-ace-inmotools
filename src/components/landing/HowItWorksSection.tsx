@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Rocket } from "lucide-react";
-import step1Img from "@/assets/steps/step-1-register.jpg";
-import step2Img from "@/assets/steps/step-2-tool.jpg";
-import step3Img from "@/assets/steps/step-3-result.jpg";
+import step1Img from "@/assets/steps/step-1-register.png";
+import step2Img from "@/assets/steps/step-2-tool.png";
+import step3Img from "@/assets/steps/step-3-result.png";
 
 const steps = [
   {
