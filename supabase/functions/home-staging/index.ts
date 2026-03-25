@@ -9,9 +9,13 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { imageBase64, style, tipoEspacio, estancia, customPrompt } = await req.json();
+    const { imageBase64, style, tipoEspacio, estancia, quality, customPrompt } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
+    const model = quality === "premium"
+      ? "google/gemini-3-pro-image-preview"
+      : "google/gemini-2.5-flash-image";
 
     if (!imageBase64) throw new Error("No se proporcionó imagen");
 
