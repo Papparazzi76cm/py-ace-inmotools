@@ -16,11 +16,37 @@ const estilos = [
   { value: "industrial", label: "Industrial" },
   { value: "boho", label: "Bohemio" },
   { value: "lujo", label: "Lujo / Premium" },
-  { value: "vacio", label: "Vaciar habitación" },
+  { value: "vacio", label: "Vaciar espacio" },
+];
+
+const tiposInterior = [
+  { value: "salon", label: "Salón" },
+  { value: "comedor", label: "Comedor" },
+  { value: "cocina", label: "Cocina" },
+  { value: "dormitorio", label: "Dormitorio" },
+  { value: "bano", label: "Baño" },
+  { value: "aseo", label: "Aseo" },
+  { value: "garaje", label: "Garaje" },
+  { value: "trastero", label: "Trastero" },
+  { value: "oficina", label: "Oficina / Despacho" },
+  { value: "pasillo", label: "Pasillo / Recibidor" },
+];
+
+const tiposExterior = [
+  { value: "fachada", label: "Fachada" },
+  { value: "quincho", label: "Quincho / Parrilla" },
+  { value: "jardin", label: "Jardín" },
+  { value: "piscina", label: "Piscina" },
+  { value: "zonas-comunes", label: "Zonas comunes" },
+  { value: "parque-infantil", label: "Parque de juegos infantiles" },
+  { value: "terraza", label: "Terraza / Balcón" },
+  { value: "patio", label: "Patio" },
 ];
 
 const HomeStagingPage = () => {
   const [style, setStyle] = useState("moderno");
+  const [tipoEspacio, setTipoEspacio] = useState<"interior" | "exterior">("interior");
+  const [estancia, setEstancia] = useState("salon");
   const [originalImage, setOriginalImage] = useState<string | null>(null);
   const [resultImage, setResultImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -74,7 +100,7 @@ const HomeStagingPage = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke("home-staging", {
-        body: { imageBase64: originalImage, style },
+        body: { imageBase64: originalImage, style, tipoEspacio, estancia },
       });
 
       if (error) throw error;
@@ -147,6 +173,38 @@ const HomeStagingPage = () => {
                   <img src={originalImage} alt="Original" className="w-full h-auto" />
                 </div>
               )}
+            </div>
+
+            <div>
+              <Label>Tipo de espacio</Label>
+              <Select value={tipoEspacio} onValueChange={(v: "interior" | "exterior") => {
+                setTipoEspacio(v);
+                setEstancia(v === "interior" ? "salon" : "fachada");
+              }}>
+                <SelectTrigger className="mt-1.5">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="interior">Interior</SelectItem>
+                  <SelectItem value="exterior">Exterior</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label>Tipo de estancia</Label>
+              <Select value={estancia} onValueChange={setEstancia}>
+                <SelectTrigger className="mt-1.5">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {(tipoEspacio === "interior" ? tiposInterior : tiposExterior).map((t) => (
+                    <SelectItem key={t.value} value={t.value}>
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div>

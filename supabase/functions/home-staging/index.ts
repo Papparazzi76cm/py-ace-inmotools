@@ -9,20 +9,23 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { imageBase64, style } = await req.json();
+    const { imageBase64, style, tipoEspacio, estancia } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
     if (!imageBase64) throw new Error("No se proporcionó imagen");
 
+    const esInterior = tipoEspacio === "interior";
+    const espacioLabel = estancia || (esInterior ? "habitación" : "espacio exterior");
+
     const stylePrompts: Record<string, string> = {
-      moderno: "Redecora esta habitación con un estilo moderno y minimalista: muebles de líneas limpias, colores neutros con acentos en negro y madera natural, iluminación cálida LED. Mantén exactamente la misma perspectiva, puertas, ventanas, escaleras y elementos estructurales.",
-      clasico: "Redecora esta habitación con un estilo clásico y elegante: muebles de madera noble, tapicería en tonos beige y dorado, cortinas pesadas, lámparas de araña o apliques clásicos. Mantén exactamente la misma perspectiva, puertas, ventanas, escaleras y elementos estructurales.",
-      nordico: "Redecora esta habitación con un estilo nórdico escandinavo: muebles de madera clara, textiles blancos y grises, plantas verdes, iluminación natural potenciada. Mantén exactamente la misma perspectiva, puertas, ventanas, escaleras y elementos estructurales.",
-      industrial: "Redecora esta habitación con un estilo industrial: muebles de metal y madera reciclada, lámparas tipo Edison, acabados en ladrillo visto y concreto. Mantén exactamente la misma perspectiva, puertas, ventanas, escaleras y elementos estructurales.",
-      boho: "Redecora esta habitación con un estilo bohemio: textiles coloridos y con patrones, plantas abundantes, muebles de ratán y madera, alfombras tejidas, macramé. Mantén exactamente la misma perspectiva, puertas, ventanas, escaleras y elementos estructurales.",
-      lujo: "Redecora esta habitación con un estilo lujoso premium: muebles de diseñador, mármol, acabados en oro o latón, iluminación ambiental sofisticada, textiles de alta gama. Mantén exactamente la misma perspectiva, puertas, ventanas, escaleras y elementos estructurales.",
-      vacio: "Elimina todos los muebles y decoración de esta habitación, dejándola completamente vacía pero limpia y lista para mostrar. Mantén exactamente la misma perspectiva, puertas, ventanas, escaleras y elementos estructurales. Muestra solo las paredes, suelo y techo limpios.",
+      moderno: `Redecora ${esInterior ? "esta estancia (" + espacioLabel + ")" : "este espacio exterior (" + espacioLabel + ")"} con un estilo moderno y minimalista: muebles de líneas limpias, colores neutros con acentos en negro y madera natural, iluminación cálida LED. Mantén exactamente la misma perspectiva, puertas, ventanas, escaleras y elementos estructurales.`,
+      clasico: `Redecora ${esInterior ? "esta estancia (" + espacioLabel + ")" : "este espacio exterior (" + espacioLabel + ")"} con un estilo clásico y elegante: muebles de madera noble, tapicería en tonos beige y dorado, cortinas pesadas, lámparas de araña o apliques clásicos. Mantén exactamente la misma perspectiva y elementos estructurales.`,
+      nordico: `Redecora ${esInterior ? "esta estancia (" + espacioLabel + ")" : "este espacio exterior (" + espacioLabel + ")"} con un estilo nórdico escandinavo: muebles de madera clara, textiles blancos y grises, plantas verdes, iluminación natural potenciada. Mantén exactamente la misma perspectiva y elementos estructurales.`,
+      industrial: `Redecora ${esInterior ? "esta estancia (" + espacioLabel + ")" : "este espacio exterior (" + espacioLabel + ")"} con un estilo industrial: muebles de metal y madera reciclada, lámparas tipo Edison, acabados en ladrillo visto y concreto. Mantén exactamente la misma perspectiva y elementos estructurales.`,
+      boho: `Redecora ${esInterior ? "esta estancia (" + espacioLabel + ")" : "este espacio exterior (" + espacioLabel + ")"} con un estilo bohemio: textiles coloridos y con patrones, plantas abundantes, muebles de ratán y madera, alfombras tejidas, macramé. Mantén exactamente la misma perspectiva y elementos estructurales.`,
+      lujo: `Redecora ${esInterior ? "esta estancia (" + espacioLabel + ")" : "este espacio exterior (" + espacioLabel + ")"} con un estilo lujoso premium: muebles de diseñador, mármol, acabados en oro o latón, iluminación ambiental sofisticada, textiles de alta gama. Mantén exactamente la misma perspectiva y elementos estructurales.`,
+      vacio: `Elimina todos los muebles y decoración de ${esInterior ? "esta estancia (" + espacioLabel + ")" : "este espacio exterior (" + espacioLabel + ")"}, dejándolo completamente vacío pero limpio y listo para mostrar. Mantén exactamente la misma perspectiva y elementos estructurales. Muestra solo las superficies limpias.`,
     };
 
     const prompt = stylePrompts[style] || stylePrompts.moderno;
