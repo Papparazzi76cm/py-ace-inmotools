@@ -60,6 +60,23 @@ Responde en JSON:
         userPrompt = `Genera material de captación para: Zona: ${data.zona}. Tipo de inmueble: ${data.tipo || "general"}. Contexto: ${data.contexto || "captación general"}.`;
         break;
       }
+      case "informes": {
+        systemPrompt = `Eres un tasador inmobiliario profesional en Paraguay. Genera informes de valoración detallados y fundamentados.
+Utiliza metodología comparativa de mercado y análisis de características del inmueble.
+Responde en JSON con esta estructura exacta:
+{
+  "resumen_ejecutivo": "resumen del informe en 3-4 líneas",
+  "analisis_mercado": "análisis de la zona y mercado actual en 4-6 líneas",
+  "valoracion_estimada": "rango de valoración con justificación (ej: 'Entre 120.000 y 140.000 USD, basado en...')",
+  "factores_positivos": ["factor 1", "factor 2", "factor 3"],
+  "factores_negativos": ["factor 1", "factor 2"],
+  "recomendaciones": ["recomendación 1", "recomendación 2", "recomendación 3"],
+  "metodologia": "descripción breve de la metodología utilizada",
+  "disclaimer": "nota legal sobre el carácter orientativo de la valoración"
+}`;
+        userPrompt = `Genera un informe de valoración para: Tipo: ${data.tipo || "propiedad"}. Ubicación: ${data.ubicacion}. Superficie construida: ${data.superficie || "N/A"} m². Superficie terreno: ${data.superficieTerreno || "N/A"} m². Habitaciones: ${data.habitaciones || "N/A"}. Baños: ${data.banos || "N/A"}. Antigüedad: ${data.antiguedad || "N/A"} años. Estado: ${data.estado || "bueno"}. Extras: ${data.extras || "ninguno"}. Precio referencia: ${data.precioReferencia || "no indicado"}.`;
+        break;
+      }
       default:
         return new Response(JSON.stringify({ error: "Herramienta no válida" }), {
           status: 400,
