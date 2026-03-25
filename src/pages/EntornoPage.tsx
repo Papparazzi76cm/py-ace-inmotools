@@ -27,6 +27,7 @@ const EntornoPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
+      <UsageLimitBanner toolId="entorno" />
       <div className="flex items-center gap-2 mb-6">
         <MapPin className="h-5 w-5 text-primary" />
         <h1 className="text-2xl font-semibold">Descripción de Entorno</h1>

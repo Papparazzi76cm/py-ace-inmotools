@@ -47,6 +47,7 @@ const RentabilidadPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
+      <UsageLimitBanner toolId="rentabilidad" />
       <div className="flex items-center gap-2 mb-6">
         <BarChart3 className="h-5 w-5 text-primary" />
         <h1 className="text-2xl font-semibold">Calculadora de Rentabilidad</h1>
