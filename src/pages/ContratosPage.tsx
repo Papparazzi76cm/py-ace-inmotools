@@ -188,8 +188,11 @@ const ContratosPage = () => {
                     <Button variant="ghost" size="icon" onClick={() => copiar(resultado.contrato, "Contrato")} className="h-8 w-8">
                       <Copy className="h-3.5 w-3.5" />
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={descargarTxt} className="h-8 w-8">
+                    <Button variant="ghost" size="icon" onClick={descargarTxt} className="h-8 w-8" title="Descargar TXT">
                       <Download className="h-3.5 w-3.5" />
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={descargarPdf} className="h-8 w-8" title="Descargar PDF">
+                      <FileDown className="h-3.5 w-3.5" />
                     </Button>
                   </div>
                 </CardHeader>
