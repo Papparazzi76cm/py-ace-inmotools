@@ -11,6 +11,7 @@ import {
   UserPlus,
   FileSignature,
   LayoutDashboard,
+  Users,
 } from "lucide-react";
 
 export interface Tool {
