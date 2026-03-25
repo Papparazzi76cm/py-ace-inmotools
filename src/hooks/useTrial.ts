@@ -101,6 +101,11 @@ export function useTrial() {
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 
+    // Month start (1st of current month)
+    const monthStart = new Date();
+    monthStart.setDate(1);
+    monthStart.setHours(0, 0, 0, 0);
+
     // Today's usage
     const { data: todayData } = await supabase
       .from("usage_logs")
@@ -113,7 +118,19 @@ export function useTrial() {
       todayUsage[log.tool_id] = (todayUsage[log.tool_id] || 0) + 1;
     });
 
-    // Total usage (for home-staging)
+    // Monthly usage (for paid home-staging limit)
+    const { data: monthlyData } = await supabase
+      .from("usage_logs")
+      .select("tool_id")
+      .eq("user_id", user.id)
+      .gte("used_at", monthStart.toISOString());
+
+    const monthlyUsage: Record<string, number> = {};
+    monthlyData?.forEach((log) => {
+      monthlyUsage[log.tool_id] = (monthlyUsage[log.tool_id] || 0) + 1;
+    });
+
+    // Total usage (for trial limits)
     const { data: totalData } = await supabase
       .from("usage_logs")
       .select("tool_id")
@@ -124,7 +141,7 @@ export function useTrial() {
       totalUsage[log.tool_id] = (totalUsage[log.tool_id] || 0) + 1;
     });
 
-    setUsage({ todayUsage, totalUsage });
+    setUsage({ todayUsage, totalUsage, monthlyUsage });
   }, [user]);
 
   // Countdown timer
