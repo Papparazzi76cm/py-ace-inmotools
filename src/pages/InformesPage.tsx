@@ -9,6 +9,7 @@ import { FileSpreadsheet, Sparkles, Loader2, Copy, Download, Printer } from "luc
 import { toast } from "sonner";
 import { useInmoAI } from "@/hooks/useInmoAI";
 import { UsageLimitBanner } from "@/components/UsageLimitBanner";
+import { exportInformePdf } from "@/lib/exportInformePdf";
 
 const tiposInmueble = [
   { value: "casa", label: "Casa" },
@@ -104,6 +105,25 @@ const InformesPage = () => {
 
   const imprimirInforme = () => {
     window.print();
+  };
+
+  const descargarPdf = () => {
+    if (!resultado) return;
+    try {
+      exportInformePdf(resultado, {
+        tipo,
+        ubicacion,
+        superficie,
+        superficieTerreno,
+        habitaciones,
+        banos,
+        antiguedad,
+        estado,
+      });
+      toast.success("PDF descargado correctamente");
+    } catch {
+      toast.error("Error al generar el PDF");
+    }
   };
 
   return (
@@ -225,6 +245,9 @@ const InformesPage = () => {
                   </Button>
                   <Button variant="outline" size="sm" onClick={imprimirInforme}>
                     <Printer className="h-3.5 w-3.5 mr-1.5" /> Imprimir
+                  </Button>
+                  <Button size="sm" onClick={descargarPdf} className="bg-primary">
+                    <Download className="h-3.5 w-3.5 mr-1.5" /> Descargar PDF
                   </Button>
                 </div>
               </div>
