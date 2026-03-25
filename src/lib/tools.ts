@@ -48,7 +48,7 @@ export const tools: Tool[] = [
     icon: Scale,
     path: "/herramientas/consultor-legal",
     category: "legal",
-    ready: false,
+    ready: true,
   },
   {
     id: "costes",
@@ -84,7 +84,7 @@ export const tools: Tool[] = [
     icon: Megaphone,
     path: "/herramientas/anuncios",
     category: "contenido",
-    ready: false,
+    ready: true,
   },
   {
     id: "entorno",
@@ -93,7 +93,7 @@ export const tools: Tool[] = [
     icon: MapPin,
     path: "/herramientas/entorno",
     category: "contenido",
-    ready: false,
+    ready: true,
   },
   {
     id: "guiones",
@@ -102,7 +102,7 @@ export const tools: Tool[] = [
     icon: Video,
     path: "/herramientas/guiones",
     category: "contenido",
-    ready: false,
+    ready: true,
   },
   {
     id: "captacion",
@@ -111,7 +111,7 @@ export const tools: Tool[] = [
     icon: UserPlus,
     path: "/herramientas/captacion",
     category: "captacion",
-    ready: false,
+    ready: true,
   },
 ];
 

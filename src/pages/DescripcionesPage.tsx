@@ -5,8 +5,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Copy, FileText } from "lucide-react";
+import { Copy, FileText, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useInmoAI } from "@/hooks/useInmoAI";
 
 const estilos = [
   { value: "formal", label: "Formal" },
@@ -24,39 +25,19 @@ const DescripcionesPage = () => {
   const [ubicacion, setUbicacion] = useState("");
   const [extras, setExtras] = useState("");
   const [resultado, setResultado] = useState<{ corta: string; larga: string; redes: string } | null>(null);
+  const { generate, loading } = useInmoAI();
 
-  const generar = () => {
-    const tipoText = tipo || "propiedad";
-    const habText = habitaciones ? `${habitaciones} habitaciones` : "";
-    const supText = superficie ? `${superficie} m²` : "";
-    const ubText = ubicacion ? `en ${ubicacion}` : "";
-    const detalles = [habText, supText, ubText].filter(Boolean).join(", ");
-
-    const toneMap: Record<string, { adj: string; opener: string }> = {
-      formal: { adj: "excepcional", opener: "Presentamos" },
-      comercial: { adj: "increíble", opener: "¡No pierdas esta oportunidad!" },
-      directo: { adj: "ideal", opener: "Disponible ahora:" },
-      emocional: { adj: "soñada", opener: "Imagina vivir en" },
-      lujo: { adj: "exclusiva", opener: "Una joya inmobiliaria:" },
-    };
-
-    const tone = toneMap[estilo] || toneMap.comercial;
-
-    const corta = `${tone.opener} ${tipoText} ${tone.adj}${detalles ? ` con ${detalles}` : ""}. ${extras ? extras + "." : "Contacta para más información."}`;
-
-    const larga = `${tone.opener} esta ${tone.adj} ${tipoText}${ubText ? ` ubicada ${ubText}` : ""}.\n\n${
-      detalles ? `Cuenta con ${detalles}, ` : ""
-    }ofreciendo el espacio perfecto para ${
-      estilo === "lujo" ? "quienes buscan lo mejor" : "toda la familia"
-    }.\n\n${
-      extras ? `Características destacadas: ${extras}.\n\n` : ""
-    }Una oportunidad que no querrás dejar pasar. ¡Agenda tu visita hoy!`;
-
-    const redes = `🏠 ${tipoText.charAt(0).toUpperCase() + tipoText.slice(1)} ${tone.adj}${ubText ? ` ${ubText}` : ""}\n${
-      detalles ? `📐 ${detalles}\n` : ""
-    }${extras ? `✨ ${extras}\n` : ""}📩 ¡Escríbenos para más info!\n#inmobiliaria #paraguay #realestate`;
-
-    setResultado({ corta, larga, redes });
+  const generar = async () => {
+    const result = await generate("descripciones", {
+      tipo, estilo, habitaciones, superficie, ubicacion, extras,
+    });
+    if (result) {
+      setResultado({
+        corta: result.corta || "",
+        larga: result.larga || "",
+        redes: result.redes || "",
+      });
+    }
   };
 
   const copiar = (text: string, label: string) => {
@@ -69,6 +50,7 @@ const DescripcionesPage = () => {
       <div className="flex items-center gap-2 mb-6">
         <FileText className="h-5 w-5 text-primary" />
         <h1 className="text-2xl font-semibold">Generador de Descripciones</h1>
+        <Sparkles className="h-4 w-4 text-primary" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -110,8 +92,8 @@ const DescripcionesPage = () => {
               <Label>Extras / Características</Label>
               <Textarea placeholder="Piscina, garaje doble, vista panorámica..." value={extras} onChange={(e) => setExtras(e.target.value)} rows={3} />
             </div>
-            <Button onClick={generar} className="w-full">
-              Generar Descripciones
+            <Button onClick={generar} className="w-full" disabled={loading}>
+              {loading ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Generando con IA...</> : "Generar con IA"}
             </Button>
           </CardContent>
         </Card>
@@ -127,7 +109,7 @@ const DescripcionesPage = () => {
             <Card className="glass-card">
               <CardContent className="p-8 text-center text-muted-foreground">
                 <FileText className="h-10 w-10 mx-auto mb-3 opacity-30" />
-                <p className="text-sm">Completa los datos y presiona "Generar" para ver las descripciones.</p>
+                <p className="text-sm">Completa los datos y presiona "Generar" para crear descripciones con IA.</p>
               </CardContent>
             </Card>
           )}
