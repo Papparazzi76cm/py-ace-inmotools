@@ -62,7 +62,7 @@ export function useTrial() {
     minutesRemaining: 0,
     secondsRemaining: 0,
   });
-  const [usage, setUsage] = useState<UsageData>({ todayUsage: {}, totalUsage: {} });
+  const [usage, setUsage] = useState<UsageData>({ todayUsage: {}, totalUsage: {}, monthlyUsage: {} });
   const [loading, setLoading] = useState(true);
 
   const fetchTrial = useCallback(async () => {
