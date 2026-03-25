@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FileSpreadsheet, Sparkles, Loader2, Copy, Download, Printer } from "lucide-react";
+import { FileSpreadsheet, Sparkles, Loader2, Copy, Download, Printer, Upload, X, Camera } from "lucide-react";
 import { toast } from "sonner";
 import { useInmoAI } from "@/hooks/useInmoAI";
 import { UsageLimitBanner } from "@/components/UsageLimitBanner";
 import { exportInformePdf } from "@/lib/exportInformePdf";
+import { AgencySettingsCard } from "@/components/AgencySettingsCard";
+import { useAgencyProfile } from "@/hooks/useAgencyProfile";
+import { supabase } from "@/integrations/supabase/client";
 
 const tiposInmueble = [
   { value: "casa", label: "Casa" },
@@ -39,6 +42,7 @@ interface InformeResult {
   recomendaciones: string[];
   metodologia: string;
   disclaimer: string;
+  analisis_visual?: string;
 }
 
 const InformesPage = () => {
@@ -52,8 +56,36 @@ const InformesPage = () => {
   const [estado, setEstado] = useState("bueno");
   const [extras, setExtras] = useState("");
   const [precioReferencia, setPrecioReferencia] = useState("");
+  const [fotos, setFotos] = useState<string[]>([]);
   const [resultado, setResultado] = useState<InformeResult | null>(null);
   const { generate, loading } = useInmoAI();
+  const { profile } = useAgencyProfile();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [analyzingPhotos, setAnalyzingPhotos] = useState(false);
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (fotos.length + files.length > 5) {
+      toast.error("Máximo 5 fotos");
+      return;
+    }
+    files.forEach((file) => {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error(`${file.name} supera los 5MB`);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setFotos((prev) => [...prev, ev.target?.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+    if (e.target) e.target.value = "";
+  };
+
+  const removePhoto = (index: number) => {
+    setFotos((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const generar = async () => {
     if (!ubicacion.trim()) {
@@ -61,64 +93,73 @@ const InformesPage = () => {
       return;
     }
 
+    // Step 1: Generate the text report
     const result = await generate("informes", {
-      tipo,
-      ubicacion,
-      superficie,
-      superficieTerreno,
-      habitaciones,
-      banos,
-      antiguedad,
-      estado,
-      extras,
-      precioReferencia,
+      tipo, ubicacion, superficie, superficieTerreno,
+      habitaciones, banos, antiguedad, estado, extras, precioReferencia,
     });
 
-    if (result) {
-      setResultado({
-        resumen_ejecutivo: result.resumen_ejecutivo || "",
-        analisis_mercado: result.analisis_mercado || "",
-        valoracion_estimada: result.valoracion_estimada || "",
-        factores_positivos: result.factores_positivos || [],
-        factores_negativos: result.factores_negativos || [],
-        recomendaciones: result.recomendaciones || [],
-        metodologia: result.metodologia || "",
-        disclaimer: result.disclaimer || "",
-      });
+    if (!result) return;
+
+    let analisisVisual = "";
+
+    // Step 2: If photos, analyze them visually
+    if (fotos.length > 0) {
+      setAnalyzingPhotos(true);
+      try {
+        const { data, error } = await supabase.functions.invoke("analyze-photos", {
+          body: { images: fotos, tipo, ubicacion },
+        });
+        if (!error && data?.result) {
+          analisisVisual = data.result;
+        }
+      } catch {
+        // Visual analysis failed, continue without it
+      }
+      setAnalyzingPhotos(false);
     }
+
+    setResultado({
+      resumen_ejecutivo: result.resumen_ejecutivo || "",
+      analisis_mercado: result.analisis_mercado || "",
+      valoracion_estimada: result.valoracion_estimada || "",
+      factores_positivos: result.factores_positivos || [],
+      factores_negativos: result.factores_negativos || [],
+      recomendaciones: result.recomendaciones || [],
+      metodologia: result.metodologia || "",
+      disclaimer: result.disclaimer || "",
+      analisis_visual: analisisVisual,
+    });
   };
 
   const copiarInforme = () => {
     if (!resultado) return;
-    const text = `INFORME DE VALORACIÓN INMOBILIARIA\n\n` +
+    let text = `INFORME DE VALORACIÓN INMOBILIARIA\n\n` +
       `RESUMEN EJECUTIVO\n${resultado.resumen_ejecutivo}\n\n` +
       `ANÁLISIS DE MERCADO\n${resultado.analisis_mercado}\n\n` +
       `VALORACIÓN ESTIMADA\n${resultado.valoracion_estimada}\n\n` +
       `FACTORES POSITIVOS\n${resultado.factores_positivos.map(f => `• ${f}`).join("\n")}\n\n` +
       `FACTORES NEGATIVOS\n${resultado.factores_negativos.map(f => `• ${f}`).join("\n")}\n\n` +
-      `RECOMENDACIONES\n${resultado.recomendaciones.map(r => `• ${r}`).join("\n")}\n\n` +
-      `METODOLOGÍA\n${resultado.metodologia}\n\n` +
-      `NOTA LEGAL\n${resultado.disclaimer}`;
+      `RECOMENDACIONES\n${resultado.recomendaciones.map(r => `• ${r}`).join("\n")}\n\n`;
+    if (resultado.analisis_visual) {
+      text += `ANÁLISIS VISUAL\n${resultado.analisis_visual}\n\n`;
+    }
+    text += `METODOLOGÍA\n${resultado.metodologia}\n\nNOTA LEGAL\n${resultado.disclaimer}`;
     navigator.clipboard.writeText(text);
     toast.success("Informe copiado al portapapeles");
   };
 
-  const imprimirInforme = () => {
-    window.print();
-  };
-
-  const descargarPdf = () => {
+  const descargarPdf = async () => {
     if (!resultado) return;
     try {
-      exportInformePdf(resultado, {
-        tipo,
-        ubicacion,
-        superficie,
-        superficieTerreno,
-        habitaciones,
-        banos,
-        antiguedad,
-        estado,
+      await exportInformePdf(resultado, {
+        tipo, ubicacion, superficie, superficieTerreno,
+        habitaciones, banos, antiguedad, estado,
+      }, {
+        agency_name: profile.agency_name,
+        agency_phone: profile.agency_phone,
+        agency_email: profile.agency_email,
+        agency_logo_url: profile.agency_logo_url,
       });
       toast.success("PDF descargado correctamente");
     } catch {
@@ -137,101 +178,114 @@ const InformesPage = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Form */}
-        <Card className="glass-card lg:col-span-1">
-          <CardHeader>
-            <CardTitle className="text-base">Datos del Inmueble</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label>Tipo de inmueble</Label>
-              <Select value={tipo} onValueChange={setTipo}>
-                <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {tiposInmueble.map((t) => (
-                    <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label>Ubicación *</Label>
-              <Input
-                placeholder="Ciudad, barrio, calle..."
-                value={ubicacion}
-                onChange={(e) => setUbicacion(e.target.value)}
-                className="mt-1.5"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
+        <div className="lg:col-span-1 space-y-4">
+          <Card className="glass-card">
+            <CardHeader>
+              <CardTitle className="text-base">Datos del Inmueble</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <div>
-                <Label>Superficie construida (m²)</Label>
-                <Input type="number" placeholder="120" value={superficie} onChange={(e) => setSuperficie(e.target.value)} className="mt-1.5" />
+                <Label>Tipo de inmueble</Label>
+                <Select value={tipo} onValueChange={setTipo}>
+                  <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {tiposInmueble.map((t) => (
+                      <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
+
               <div>
-                <Label>Superficie terreno (m²)</Label>
-                <Input type="number" placeholder="300" value={superficieTerreno} onChange={(e) => setSuperficieTerreno(e.target.value)} className="mt-1.5" />
+                <Label>Ubicación *</Label>
+                <Input placeholder="Ciudad, barrio, calle..." value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} className="mt-1.5" />
               </div>
-            </div>
 
-            <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label>Sup. construida (m²)</Label>
+                  <Input type="number" placeholder="120" value={superficie} onChange={(e) => setSuperficie(e.target.value)} className="mt-1.5" />
+                </div>
+                <div>
+                  <Label>Sup. terreno (m²)</Label>
+                  <Input type="number" placeholder="300" value={superficieTerreno} onChange={(e) => setSuperficieTerreno(e.target.value)} className="mt-1.5" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <Label>Habitaciones</Label>
+                  <Input type="number" placeholder="3" value={habitaciones} onChange={(e) => setHabitaciones(e.target.value)} className="mt-1.5" />
+                </div>
+                <div>
+                  <Label>Baños</Label>
+                  <Input type="number" placeholder="2" value={banos} onChange={(e) => setBanos(e.target.value)} className="mt-1.5" />
+                </div>
+                <div>
+                  <Label>Antigüedad</Label>
+                  <Input type="number" placeholder="5" value={antiguedad} onChange={(e) => setAntiguedad(e.target.value)} className="mt-1.5" />
+                </div>
+              </div>
+
               <div>
-                <Label>Habitaciones</Label>
-                <Input type="number" placeholder="3" value={habitaciones} onChange={(e) => setHabitaciones(e.target.value)} className="mt-1.5" />
+                <Label>Estado de conservación</Label>
+                <Select value={estado} onValueChange={setEstado}>
+                  <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {estadosConservacion.map((e) => (
+                      <SelectItem key={e.value} value={e.value}>{e.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
+
               <div>
-                <Label>Baños</Label>
-                <Input type="number" placeholder="2" value={banos} onChange={(e) => setBanos(e.target.value)} className="mt-1.5" />
+                <Label>Precio referencia (opcional)</Label>
+                <Input placeholder="Ej: 150.000 USD" value={precioReferencia} onChange={(e) => setPrecioReferencia(e.target.value)} className="mt-1.5" />
               </div>
+
               <div>
-                <Label>Antigüedad</Label>
-                <Input type="number" placeholder="5 años" value={antiguedad} onChange={(e) => setAntiguedad(e.target.value)} className="mt-1.5" />
+                <Label>Extras y características</Label>
+                <Textarea placeholder="Piscina, garaje, ascensor..." value={extras} onChange={(e) => setExtras(e.target.value)} rows={2} className="mt-1.5" />
               </div>
-            </div>
 
-            <div>
-              <Label>Estado de conservación</Label>
-              <Select value={estado} onValueChange={setEstado}>
-                <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {estadosConservacion.map((e) => (
-                    <SelectItem key={e.value} value={e.value}>{e.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+              {/* Photo upload */}
+              <div>
+                <Label className="flex items-center gap-1.5">
+                  <Camera className="h-3.5 w-3.5" /> Fotos del inmueble (opcional)
+                </Label>
+                <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handlePhotoUpload} />
+                <Button variant="outline" size="sm" className="w-full mt-1.5 border-dashed" onClick={() => fileInputRef.current?.click()} disabled={fotos.length >= 5}>
+                  <Upload className="h-3.5 w-3.5 mr-1.5" />
+                  {fotos.length > 0 ? `${fotos.length}/5 fotos` : "Subir fotos (máx 5)"}
+                </Button>
+                {fotos.length > 0 && (
+                  <div className="flex gap-2 mt-2 flex-wrap">
+                    {fotos.map((f, i) => (
+                      <div key={i} className="relative w-14 h-14 rounded-lg overflow-hidden border border-border">
+                        <img src={f} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                        <button onClick={() => removePhoto(i)} className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5">
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <p className="text-[10px] text-muted-foreground mt-1">La IA analizará las fotos para enriquecer la valoración</p>
+              </div>
 
-            <div>
-              <Label>Precio de referencia (opcional)</Label>
-              <Input
-                placeholder="Ej: 150.000 USD"
-                value={precioReferencia}
-                onChange={(e) => setPrecioReferencia(e.target.value)}
-                className="mt-1.5"
-              />
-            </div>
+              <Button onClick={generar} className="w-full" disabled={loading || analyzingPhotos || !ubicacion.trim()}>
+                {loading || analyzingPhotos ? (
+                  <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> {analyzingPhotos ? "Analizando fotos..." : "Generando informe..."}</>
+                ) : (
+                  <><Sparkles className="h-4 w-4 mr-2" /> Generar Informe</>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
 
-            <div>
-              <Label>Extras y características</Label>
-              <Textarea
-                placeholder="Piscina, garaje, ascensor, reforma reciente..."
-                value={extras}
-                onChange={(e) => setExtras(e.target.value)}
-                rows={3}
-                className="mt-1.5"
-              />
-            </div>
-
-            <Button onClick={generar} className="w-full" disabled={loading || !ubicacion.trim()}>
-              {loading ? (
-                <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Generando informe...</>
-              ) : (
-                <><Sparkles className="h-4 w-4 mr-2" /> Generar Informe</>
-              )}
-            </Button>
-          </CardContent>
-        </Card>
+          <AgencySettingsCard />
+        </div>
 
         {/* Results */}
         <div className="lg:col-span-2 print:col-span-3">
@@ -243,7 +297,7 @@ const InformesPage = () => {
                   <Button variant="outline" size="sm" onClick={copiarInforme}>
                     <Copy className="h-3.5 w-3.5 mr-1.5" /> Copiar
                   </Button>
-                  <Button variant="outline" size="sm" onClick={imprimirInforme}>
+                  <Button variant="outline" size="sm" onClick={() => window.print()}>
                     <Printer className="h-3.5 w-3.5 mr-1.5" /> Imprimir
                   </Button>
                   <Button size="sm" onClick={descargarPdf} className="bg-primary">
@@ -279,6 +333,19 @@ const InformesPage = () => {
                 </CardContent>
               </Card>
 
+              {resultado.analisis_visual && (
+                <Card className="glass-card border-accent/30">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center gap-1.5">
+                      <Camera className="h-3.5 w-3.5 text-accent-foreground" /> Análisis Visual del Inmueble
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-foreground whitespace-pre-line leading-relaxed">{resultado.analisis_visual}</p>
+                  </CardContent>
+                </Card>
+              )}
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Card className="glass-card">
                   <CardHeader className="pb-2">
@@ -294,7 +361,6 @@ const InformesPage = () => {
                     </ul>
                   </CardContent>
                 </Card>
-
                 <Card className="glass-card">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm text-destructive">Factores Negativos</CardTitle>
