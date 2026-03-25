@@ -124,6 +124,15 @@ export const tools: Tool[] = [
     category: "legal",
     ready: true,
   },
+  {
+    id: "roleplay",
+    title: "Asistente de Role Play",
+    description: "Entrena negociación con clientes simulados por IA",
+    icon: Users,
+    path: "/herramientas/roleplay",
+    category: "formacion",
+    ready: true,
+  },
 ];
 
 export const dashboardItem = {
