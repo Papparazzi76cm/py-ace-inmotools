@@ -6,6 +6,7 @@ export interface TrialLimits {
   "home-staging": { type: "total"; max: 30 };
   "consultor-legal": { type: "daily"; max: 3 };
   descripciones: { type: "daily"; max: 3 };
+  informes: { type: "daily"; max: 3 };
   anuncios: { type: "daily"; max: 3 };
   entorno: { type: "daily"; max: 3 };
   guiones: { type: "daily"; max: 3 };
@@ -18,6 +19,7 @@ export const TRIAL_LIMITS: TrialLimits = {
   "home-staging": { type: "total", max: 30 },
   "consultor-legal": { type: "daily", max: 3 },
   descripciones: { type: "daily", max: 3 },
+  informes: { type: "daily", max: 3 },
   anuncios: { type: "daily", max: 3 },
   entorno: { type: "daily", max: 3 },
   guiones: { type: "daily", max: 3 },
