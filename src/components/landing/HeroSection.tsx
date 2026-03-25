@@ -11,9 +11,15 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
     <section className="relative min-h-screen flex items-center justify-center px-4 pt-20 pb-16 overflow-hidden">
       {/* Gradient orbs with pulse */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full blur-[128px] glow-pulse bg-primary/30" />
-      <div className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full blur-[100px] glow-pulse bg-blue-400/20" style={{ animationDelay: "1.5s" }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full blur-[180px] glow-pulse bg-primary/10" style={{ animationDelay: "0.75s" }} />
-      
+      <div
+        className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full blur-[100px] glow-pulse bg-blue-400/20"
+        style={{ animationDelay: "1.5s" }}
+      />
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full blur-[180px] glow-pulse bg-primary/10"
+        style={{ animationDelay: "0.75s" }}
+      />
+
       {/* Radial vignette to black edges */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,hsl(215_45%_12%)_80%)]" />
 
@@ -52,7 +58,8 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed px-2"
         >
-          10 herramientas inteligentes en una sola plataforma. Captación, comercialización, análisis legal y contenido — todo lo que necesitás como agente inmobiliario en Paraguay.
+          12 herramientas inteligentes en una sola plataforma. Captación, comercialización, análisis legal y contenido —
+          todo lo que necesitás como agente inmobiliario en Paraguay.
         </motion.p>
 
         <motion.div
@@ -93,7 +100,10 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
             { value: "∞", label: "Generaciones" },
           ].map((stat, i) => (
             <div key={i} className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-primary" style={{ animation: "text-glow-pulse 3s ease-in-out infinite", animationDelay: `${i * 0.5}s` }}>
+              <div
+                className="text-2xl sm:text-3xl font-bold text-primary"
+                style={{ animation: "text-glow-pulse 3s ease-in-out infinite", animationDelay: `${i * 0.5}s` }}
+              >
                 {stat.value}
               </div>
               <div className="text-xs sm:text-sm text-muted-foreground mt-1">{stat.label}</div>
