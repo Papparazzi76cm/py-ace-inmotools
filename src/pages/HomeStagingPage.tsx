@@ -225,6 +225,18 @@ const HomeStagingPage = () => {
               </Select>
             </div>
 
+            <div>
+              <Label>Instrucciones adicionales (opcional)</Label>
+              <Textarea
+                value={customPrompt}
+                onChange={(e) => setCustomPrompt(e.target.value)}
+                placeholder="Ej: Añade una chimenea moderna, cambia el suelo a madera clara, pon cortinas blancas..."
+                className="mt-1.5 min-h-[80px] text-sm"
+                maxLength={500}
+              />
+              <p className="text-xs text-muted-foreground mt-1">{customPrompt.length}/500</p>
+            </div>
+
             <Button onClick={generate} className="w-full" disabled={loading || !originalImage}>
               {loading ? (
                 <>
