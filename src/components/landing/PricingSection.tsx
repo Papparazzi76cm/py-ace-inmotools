@@ -32,7 +32,7 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
         "Generaciones ilimitadas con IA",
         "Soporte prioritario",
         "Nuevas herramientas primero",
-        "Facturación anual: $144/año",
+        "Facturación anual: $120/año",
       ],
       popular: true,
     },
