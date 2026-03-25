@@ -116,7 +116,8 @@ const HomeStagingPage = () => {
         setResultImage(data.result.imageUrl);
         setShowComparison(true);
 
-        if (!trial.isPaid) {
+        // Log usage (costs 1 or 3 depending on quality)
+        for (let i = 0; i < usageCost; i++) {
           await logUsage("home-staging");
         }
 
