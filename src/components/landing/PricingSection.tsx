@@ -10,7 +10,7 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
   const individualPlans = [
     {
       name: "Mensual",
-      price: "19",
+      price: "15",
       period: "/mes",
       icon: Zap,
       features: [
@@ -23,7 +23,7 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
     },
     {
       name: "Anual",
-      price: "12",
+      price: "10",
       period: "/mes",
       badge: "Ahorrá 37%",
       icon: Crown,
@@ -41,11 +41,11 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
   const agencyPlans = [
     {
       name: "Agencia Mensual",
-      price: "59",
+      price: "49",
       period: "/mes",
       icon: Building2,
       features: [
-        "De 5 a 20 usuarios",
+        "Máximo usuarios",
         "Acceso completo a todas las herramientas",
         "Generaciones ilimitadas con IA",
         "Soporte prioritario",
@@ -55,12 +55,12 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
     },
     {
       name: "Agencia Anual",
-      price: "47",
+      price: "37",
       period: "/mes",
       badge: "Ahorrá 20%",
       icon: Users,
       features: [
-        "De 5 a 20 usuarios",
+        "Máximo 20 usuarios",
         "Todo del plan mensual de agencia",
         "Soporte dedicado",
         "Nuevas herramientas primero",
@@ -158,7 +158,9 @@ function PlanCard({ plan, index, onGetStarted }: { plan: any; index: number; onG
         </span>
       )}
       <div className="flex items-center gap-3 mb-6">
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${plan.popular ? "bg-primary/20 border border-primary/30" : "bg-muted border border-border/30"}`}>
+        <div
+          className={`w-10 h-10 rounded-xl flex items-center justify-center ${plan.popular ? "bg-primary/20 border border-primary/30" : "bg-muted border border-border/30"}`}
+        >
           <plan.icon className={`h-5 w-5 ${plan.popular ? "text-primary" : "text-muted-foreground"}`} />
         </div>
         <h3 className="text-lg font-semibold text-foreground">{plan.name}</h3>
