@@ -23,4 +23,5 @@ export const toolImages: Record<string, string> = {
   guiones: guionesImg,
   captacion: captacionImg,
   contratos: contratosImg,
+  roleplay: roleplayImg,
 };
