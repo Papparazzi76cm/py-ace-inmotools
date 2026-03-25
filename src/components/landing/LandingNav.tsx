@@ -24,6 +24,7 @@ const LandingNav = ({ onGetStarted }: LandingNavProps) => {
 
         <div className="hidden sm:flex items-center gap-6 text-sm text-muted-foreground">
           <a href="#features" className="hover:text-foreground transition-colors">Herramientas</a>
+          <a href="#how-it-works" className="hover:text-foreground transition-colors">Cómo funciona</a>
           <a href="#pricing" className="hover:text-foreground transition-colors">Precios</a>
         </div>
 
