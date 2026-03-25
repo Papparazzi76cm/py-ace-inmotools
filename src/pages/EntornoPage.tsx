@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { MapPin, Sparkles, Loader2 } from "lucide-react";
 import { useInmoAI } from "@/hooks/useInmoAI";
+import { UsageLimitBanner } from "@/components/UsageLimitBanner";
 
 const EntornoPage = () => {
   const [zona, setZona] = useState("");
