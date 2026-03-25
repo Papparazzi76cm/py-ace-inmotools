@@ -8,6 +8,7 @@ import anunciosImg from "@/assets/tools/anuncios.jpg";
 import entornoImg from "@/assets/tools/entorno.jpg";
 import guionesImg from "@/assets/tools/guiones.jpg";
 import captacionImg from "@/assets/tools/captacion.jpg";
+import contratosImg from "@/assets/tools/contratos.webp";
 
 export const toolImages: Record<string, string> = {
   "home-staging": homeStagingImg,
@@ -20,4 +21,5 @@ export const toolImages: Record<string, string> = {
   entorno: entornoImg,
   guiones: guionesImg,
   captacion: captacionImg,
+  contratos: contratosImg,
 };
