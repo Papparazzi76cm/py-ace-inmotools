@@ -13,6 +13,7 @@ export interface TrialLimits {
   captacion: { type: "daily"; max: 3 };
   costes: { type: "daily"; max: 10 };
   rentabilidad: { type: "daily"; max: 10 };
+  contratos: { type: "daily"; max: 3 };
 }
 
 export const TRIAL_LIMITS: TrialLimits = {
