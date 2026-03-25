@@ -4,6 +4,7 @@ import { tools, dashboardItem } from "@/lib/tools";
 import { useAuth } from "@/contexts/AuthContext";
 import { TrialCountdown } from "@/components/TrialCountdown";
 import { LogOut } from "lucide-react";
+import PynmoLogo from "@/components/PynmoLogo";
 import {
   Sidebar,
   SidebarContent,
