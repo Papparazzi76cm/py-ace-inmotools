@@ -48,6 +48,7 @@ const HomeStagingPage = () => {
   const [style, setStyle] = useState("moderno");
   const [tipoEspacio, setTipoEspacio] = useState<"interior" | "exterior">("interior");
   const [estancia, setEstancia] = useState("salon");
+  const [customPrompt, setCustomPrompt] = useState("");
   const [originalImage, setOriginalImage] = useState<string | null>(null);
   const [resultImage, setResultImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
