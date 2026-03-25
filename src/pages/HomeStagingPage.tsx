@@ -176,6 +176,38 @@ const HomeStagingPage = () => {
             </div>
 
             <div>
+              <Label>Tipo de espacio</Label>
+              <Select value={tipoEspacio} onValueChange={(v: "interior" | "exterior") => {
+                setTipoEspacio(v);
+                setEstancia(v === "interior" ? "salon" : "fachada");
+              }}>
+                <SelectTrigger className="mt-1.5">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="interior">Interior</SelectItem>
+                  <SelectItem value="exterior">Exterior</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label>Tipo de estancia</Label>
+              <Select value={estancia} onValueChange={setEstancia}>
+                <SelectTrigger className="mt-1.5">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {(tipoEspacio === "interior" ? tiposInterior : tiposExterior).map((t) => (
+                    <SelectItem key={t.value} value={t.value}>
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
               <Label>Estilo de decoración</Label>
               <Select value={style} onValueChange={setStyle}>
                 <SelectTrigger className="mt-1.5">
