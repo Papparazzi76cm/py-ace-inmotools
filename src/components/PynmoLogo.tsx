@@ -6,9 +6,9 @@ interface PynmoLogoProps {
 }
 
 const sizes = {
-  sm: "h-28",
-  md: "h-36",
-  lg: "h-40",
+  sm: "h-6",
+  md: "h-8",
+  lg: "h-10",
 };
 
 const PynmoLogo = ({ size = "md", className = "" }: PynmoLogoProps) => {

@@ -34,7 +34,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
+          className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight mb-6"
         >
           <span className="text-foreground">Tu suite completa</span>
           <br />
@@ -50,7 +50,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed px-2"
         >
           10 herramientas inteligentes en una sola plataforma. Captación, comercialización, análisis legal y contenido — todo lo que necesitás como agente inmobiliario en Paraguay.
         </motion.p>
@@ -85,7 +85,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.55 }}
-          className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto"
+          className="mt-12 sm:mt-16 grid grid-cols-3 gap-4 sm:gap-8 max-w-lg mx-auto"
         >
           {[
             { value: "10+", label: "Herramientas IA" },
