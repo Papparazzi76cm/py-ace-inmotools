@@ -107,6 +107,25 @@ const InformesPage = () => {
     window.print();
   };
 
+  const descargarPdf = () => {
+    if (!resultado) return;
+    try {
+      exportInformePdf(resultado, {
+        tipo,
+        ubicacion,
+        superficie,
+        superficieTerreno,
+        habitaciones,
+        banos,
+        antiguedad,
+        estado,
+      });
+      toast.success("PDF descargado correctamente");
+    } catch {
+      toast.error("Error al generar el PDF");
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto animate-fade-in">
       <UsageLimitBanner toolId="informes" />
