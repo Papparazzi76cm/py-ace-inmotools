@@ -16,7 +16,31 @@ const estilos = [
   { value: "industrial", label: "Industrial" },
   { value: "boho", label: "Bohemio" },
   { value: "lujo", label: "Lujo / Premium" },
-  { value: "vacio", label: "Vaciar habitación" },
+  { value: "vacio", label: "Vaciar espacio" },
+];
+
+const tiposInterior = [
+  { value: "salon", label: "Salón" },
+  { value: "comedor", label: "Comedor" },
+  { value: "cocina", label: "Cocina" },
+  { value: "dormitorio", label: "Dormitorio" },
+  { value: "bano", label: "Baño" },
+  { value: "aseo", label: "Aseo" },
+  { value: "garaje", label: "Garaje" },
+  { value: "trastero", label: "Trastero" },
+  { value: "oficina", label: "Oficina / Despacho" },
+  { value: "pasillo", label: "Pasillo / Recibidor" },
+];
+
+const tiposExterior = [
+  { value: "fachada", label: "Fachada" },
+  { value: "quincho", label: "Quincho / Parrilla" },
+  { value: "jardin", label: "Jardín" },
+  { value: "piscina", label: "Piscina" },
+  { value: "zonas-comunes", label: "Zonas comunes" },
+  { value: "parque-infantil", label: "Parque de juegos infantiles" },
+  { value: "terraza", label: "Terraza / Balcón" },
+  { value: "patio", label: "Patio" },
 ];
 
 const HomeStagingPage = () => {
