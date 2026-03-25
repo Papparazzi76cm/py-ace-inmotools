@@ -26,6 +26,11 @@ export const TRIAL_LIMITS: TrialLimits = {
   rentabilidad: { type: "daily", max: 10 },
 };
 
+// Monthly limits for paid users (only home-staging has one)
+export const PAID_MONTHLY_LIMITS: Record<string, number> = {
+  "home-staging": 150,
+};
+
 interface TrialData {
   trialStart: Date | null;
   trialEnd: Date | null;
