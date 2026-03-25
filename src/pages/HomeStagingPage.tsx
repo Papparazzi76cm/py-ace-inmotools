@@ -106,7 +106,7 @@ const HomeStagingPage = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke("home-staging", {
-        body: { imageBase64: originalImage, style, tipoEspacio, estancia, customPrompt: customPrompt.trim() || undefined },
+        body: { imageBase64: originalImage, style, tipoEspacio, estancia, quality, customPrompt: customPrompt.trim() || undefined },
       });
 
       if (error) throw error;
