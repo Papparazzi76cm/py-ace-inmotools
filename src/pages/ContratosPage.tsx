@@ -5,9 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Copy, FileSignature, Sparkles, Loader2, Download } from "lucide-react";
+import { Copy, FileSignature, Sparkles, Loader2, Download, FileDown } from "lucide-react";
 import { toast } from "sonner";
 import { useInmoAI } from "@/hooks/useInmoAI";
+import { useAgencyProfile } from "@/hooks/useAgencyProfile";
+import { exportContratoPdf } from "@/lib/exportContratoPdf";
 import { UsageLimitBanner } from "@/components/UsageLimitBanner";
 
 const tiposContrato = [
@@ -37,6 +39,7 @@ const ContratosPage = () => {
     resumen: string;
   } | null>(null);
   const { generate, loading } = useInmoAI();
+  const { profile } = useAgencyProfile();
 
   const generar = async () => {
     if (!tipoContrato || !partes.trim() || !inmueble.trim()) {
@@ -68,6 +71,16 @@ const ContratosPage = () => {
     a.click();
     URL.revokeObjectURL(url);
     toast.success("Contrato descargado");
+  };
+
+  const descargarPdf = async () => {
+    if (!resultado) return;
+    await exportContratoPdf(
+      resultado,
+      { tipo: tipoContrato, partes, inmueble, condiciones },
+      profile || undefined
+    );
+    toast.success("PDF descargado");
   };
 
   return (
@@ -175,8 +188,11 @@ const ContratosPage = () => {
                     <Button variant="ghost" size="icon" onClick={() => copiar(resultado.contrato, "Contrato")} className="h-8 w-8">
                       <Copy className="h-3.5 w-3.5" />
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={descargarTxt} className="h-8 w-8">
+                    <Button variant="ghost" size="icon" onClick={descargarTxt} className="h-8 w-8" title="Descargar TXT">
                       <Download className="h-3.5 w-3.5" />
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={descargarPdf} className="h-8 w-8" title="Descargar PDF">
+                      <FileDown className="h-3.5 w-3.5" />
                     </Button>
                   </div>
                 </CardHeader>
