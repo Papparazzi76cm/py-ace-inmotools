@@ -1,5 +1,5 @@
 import { useTrialContext } from "@/contexts/TrialContext";
-import { TRIAL_LIMITS, type TrialLimits } from "@/hooks/useTrial";
+import { TRIAL_LIMITS, PAID_MONTHLY_LIMITS, type TrialLimits } from "@/hooks/useTrial";
 import { Shield, Crown, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -10,7 +10,32 @@ interface UsageLimitBannerProps {
 export function UsageLimitBanner({ toolId }: UsageLimitBannerProps) {
   const { trial, canUseTool } = useTrialContext();
 
-  if (trial.isPaid) return null;
+  // For paid users, show banner only if tool has monthly limit
+  if (trial.isPaid) {
+    const monthlyMax = PAID_MONTHLY_LIMITS[toolId];
+    if (!monthlyMax) return null;
+
+    const { used, max } = canUseTool(toolId);
+    const percentage = max > 0 ? (used / max) * 100 : 0;
+    const isNearLimit = percentage >= 66;
+
+    return (
+      <div className={`mb-4 p-3 rounded-xl border flex items-center justify-between ${isNearLimit ? "bg-warning/10 border-warning/30" : "bg-primary/5 border-primary/20"}`}>
+        <div className="flex items-center gap-3">
+          <Shield className={`h-4 w-4 ${isNearLimit ? "text-warning" : "text-primary"}`} />
+          <p className="text-xs font-medium text-foreground">
+            {used}/{max} usos este mes
+          </p>
+        </div>
+        <div className="w-20 h-1.5 rounded-full bg-muted overflow-hidden">
+          <div
+            className={`h-full rounded-full transition-all ${percentage >= 100 ? "bg-destructive" : isNearLimit ? "bg-warning" : "bg-primary"}`}
+            style={{ width: `${Math.min(percentage, 100)}%` }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   const limit = TRIAL_LIMITS[toolId as keyof TrialLimits];
   if (!limit) return null;

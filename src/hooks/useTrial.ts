@@ -26,6 +26,11 @@ export const TRIAL_LIMITS: TrialLimits = {
   rentabilidad: { type: "daily", max: 10 },
 };
 
+// Monthly limits for paid users (only home-staging has one)
+export const PAID_MONTHLY_LIMITS: Record<string, number> = {
+  "home-staging": 150,
+};
+
 interface TrialData {
   trialStart: Date | null;
   trialEnd: Date | null;
@@ -41,6 +46,7 @@ interface TrialData {
 interface UsageData {
   todayUsage: Record<string, number>;
   totalUsage: Record<string, number>;
+  monthlyUsage: Record<string, number>;
 }
 
 export function useTrial() {
@@ -56,7 +62,7 @@ export function useTrial() {
     minutesRemaining: 0,
     secondsRemaining: 0,
   });
-  const [usage, setUsage] = useState<UsageData>({ todayUsage: {}, totalUsage: {} });
+  const [usage, setUsage] = useState<UsageData>({ todayUsage: {}, totalUsage: {}, monthlyUsage: {} });
   const [loading, setLoading] = useState(true);
 
   const fetchTrial = useCallback(async () => {
@@ -95,6 +101,11 @@ export function useTrial() {
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 
+    // Month start (1st of current month)
+    const monthStart = new Date();
+    monthStart.setDate(1);
+    monthStart.setHours(0, 0, 0, 0);
+
     // Today's usage
     const { data: todayData } = await supabase
       .from("usage_logs")
@@ -107,7 +118,19 @@ export function useTrial() {
       todayUsage[log.tool_id] = (todayUsage[log.tool_id] || 0) + 1;
     });
 
-    // Total usage (for home-staging)
+    // Monthly usage (for paid home-staging limit)
+    const { data: monthlyData } = await supabase
+      .from("usage_logs")
+      .select("tool_id")
+      .eq("user_id", user.id)
+      .gte("used_at", monthStart.toISOString());
+
+    const monthlyUsage: Record<string, number> = {};
+    monthlyData?.forEach((log) => {
+      monthlyUsage[log.tool_id] = (monthlyUsage[log.tool_id] || 0) + 1;
+    });
+
+    // Total usage (for trial limits)
     const { data: totalData } = await supabase
       .from("usage_logs")
       .select("tool_id")
@@ -118,7 +141,7 @@ export function useTrial() {
       totalUsage[log.tool_id] = (totalUsage[log.tool_id] || 0) + 1;
     });
 
-    setUsage({ todayUsage, totalUsage });
+    setUsage({ todayUsage, totalUsage, monthlyUsage });
   }, [user]);
 
   // Countdown timer
@@ -152,19 +175,30 @@ export function useTrial() {
     fetchUsage();
   }, [fetchTrial, fetchUsage]);
 
-  const canUseTool = (toolId: string): { allowed: boolean; used: number; max: number; limitType: string } => {
-    if (trial.isPaid) return { allowed: true, used: 0, max: Infinity, limitType: "none" };
+  const canUseTool = (toolId: string, cost: number = 1): { allowed: boolean; used: number; max: number; limitType: string } => {
+    // Paid users: only home-staging has a monthly limit
+    if (trial.isPaid) {
+      const monthlyMax = PAID_MONTHLY_LIMITS[toolId];
+      if (monthlyMax) {
+        const used = usage.monthlyUsage[toolId] || 0;
+        return { allowed: used + cost <= monthlyMax, used, max: monthlyMax, limitType: "monthly" };
+      }
+      return { allowed: true, used: 0, max: Infinity, limitType: "none" };
+    }
+
+    // Trial expired
     if (trial.isTrialExpired) return { allowed: false, used: 0, max: 0, limitType: "expired" };
 
+    // Trial limits
     const limit = TRIAL_LIMITS[toolId as keyof TrialLimits];
     if (!limit) return { allowed: true, used: 0, max: Infinity, limitType: "none" };
 
     if (limit.type === "daily") {
       const used = usage.todayUsage[toolId] || 0;
-      return { allowed: used < limit.max, used, max: limit.max, limitType: "daily" };
+      return { allowed: used + cost <= limit.max, used, max: limit.max, limitType: "daily" };
     } else {
       const used = usage.totalUsage[toolId] || 0;
-      return { allowed: used < limit.max, used, max: limit.max, limitType: "total" };
+      return { allowed: used + cost <= limit.max, used, max: limit.max, limitType: "total" };
     }
   };
 

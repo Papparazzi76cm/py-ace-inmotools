@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Image, Sparkles, Loader2, Upload, Download, ArrowLeftRight } from "lucide-react";
+import { Image, Sparkles, Loader2, Upload, Download, ArrowLeftRight, Zap, Crown } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -46,6 +46,7 @@ const tiposExterior = [
 
 const HomeStagingPage = () => {
   const [style, setStyle] = useState("moderno");
+  const [quality, setQuality] = useState<"fast" | "premium">("fast");
   const [tipoEspacio, setTipoEspacio] = useState<"interior" | "exterior">("interior");
   const [estancia, setEstancia] = useState("salon");
   const [customPrompt, setCustomPrompt] = useState("");
@@ -55,6 +56,8 @@ const HomeStagingPage = () => {
   const [showComparison, setShowComparison] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { canUseTool, logUsage, trial } = useTrialContext();
+
+  const usageCost = quality === "premium" ? 3 : 1;
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -85,16 +88,17 @@ const HomeStagingPage = () => {
       return;
     }
 
-    if (!trial.isPaid) {
-      const check = canUseTool("home-staging");
-      if (!check.allowed) {
-        if (trial.isTrialExpired) {
-          toast.error("Tu período de prueba ha expirado. Activá tu plan para seguir usando las herramientas.");
-        } else {
-          toast.error(`Has alcanzado el límite ${check.limitType === "daily" ? "diario" : "total"} para esta herramienta (${check.used}/${check.max}).`);
-        }
-        return;
+    // Check usage limits (trial or paid monthly)
+    const check = canUseTool("home-staging", usageCost);
+    if (!check.allowed) {
+      if (!trial.isPaid && trial.isTrialExpired) {
+        toast.error("Tu período de prueba ha expirado. Activá tu plan para seguir usando las herramientas.");
+      } else if (trial.isPaid) {
+        toast.error(`Has alcanzado el límite mensual de Home Staging (${check.used}/${check.max} usos).`);
+      } else {
+        toast.error(`Has alcanzado el límite ${check.limitType === "daily" ? "diario" : "total"} para esta herramienta (${check.used}/${check.max}).`);
       }
+      return;
     }
 
     setLoading(true);
@@ -102,7 +106,7 @@ const HomeStagingPage = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke("home-staging", {
-        body: { imageBase64: originalImage, style, tipoEspacio, estancia, customPrompt: customPrompt.trim() || undefined },
+        body: { imageBase64: originalImage, style, tipoEspacio, estancia, quality, customPrompt: customPrompt.trim() || undefined },
       });
 
       if (error) throw error;
@@ -112,7 +116,8 @@ const HomeStagingPage = () => {
         setResultImage(data.result.imageUrl);
         setShowComparison(true);
 
-        if (!trial.isPaid) {
+        // Log usage (costs 1 or 3 depending on quality)
+        for (let i = 0; i < usageCost; i++) {
           await logUsage("home-staging");
         }
 
@@ -223,6 +228,32 @@ const HomeStagingPage = () => {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div>
+              <Label>Calidad de generación</Label>
+              <div className="grid grid-cols-2 gap-2 mt-1.5">
+                <Button
+                  type="button"
+                  variant={quality === "fast" ? "default" : "outline"}
+                  className={`h-auto py-3 flex flex-col gap-1 ${quality === "fast" ? "" : "border-border"}`}
+                  onClick={() => setQuality("fast")}
+                >
+                  <Zap className="h-4 w-4" />
+                  <span className="text-xs font-medium">Rápida</span>
+                  <span className="text-[10px] text-muted-foreground">1 uso</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant={quality === "premium" ? "default" : "outline"}
+                  className={`h-auto py-3 flex flex-col gap-1 ${quality === "premium" ? "bg-gradient-to-r from-primary to-accent border-0" : "border-border"}`}
+                  onClick={() => setQuality("premium")}
+                >
+                  <Crown className="h-4 w-4" />
+                  <span className="text-xs font-medium">Premium</span>
+                  <span className="text-[10px] text-muted-foreground">3 usos</span>
+                </Button>
+              </div>
             </div>
 
             <div>
