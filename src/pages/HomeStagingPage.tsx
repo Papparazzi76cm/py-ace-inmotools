@@ -100,7 +100,7 @@ const HomeStagingPage = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke("home-staging", {
-        body: { imageBase64: originalImage, style },
+        body: { imageBase64: originalImage, style, tipoEspacio, estancia },
       });
 
       if (error) throw error;
