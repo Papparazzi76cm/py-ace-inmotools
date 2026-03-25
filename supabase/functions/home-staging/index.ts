@@ -28,7 +28,11 @@ serve(async (req) => {
       vacio: `Elimina todos los muebles y decoración de ${esInterior ? "esta estancia (" + espacioLabel + ")" : "este espacio exterior (" + espacioLabel + ")"}, dejándolo completamente vacío pero limpio y listo para mostrar. Mantén exactamente la misma perspectiva y elementos estructurales. Muestra solo las superficies limpias.`,
     };
 
-    const prompt = stylePrompts[style] || stylePrompts.moderno;
+    let prompt = stylePrompts[style] || stylePrompts.moderno;
+
+    if (customPrompt && typeof customPrompt === "string" && customPrompt.trim().length > 0) {
+      prompt += ` Además, aplica las siguientes instrucciones del usuario: ${customPrompt.trim().slice(0, 500)}`;
+    }
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
