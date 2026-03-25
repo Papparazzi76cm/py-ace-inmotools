@@ -9,10 +9,13 @@ interface HeroSectionProps {
 const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 pt-20 pb-16 overflow-hidden">
-      {/* Gradient orbs */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-[128px] animate-pulse" />
-      <div className="absolute bottom-1/4 -right-32 w-80 h-80 bg-primary/15 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: "1s" }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]" />
+      {/* Gradient orbs with pulse */}
+      <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full blur-[128px] glow-pulse bg-primary/30" />
+      <div className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full blur-[100px] glow-pulse bg-blue-400/20" style={{ animationDelay: "1.5s" }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full blur-[180px] glow-pulse bg-primary/10" style={{ animationDelay: "0.75s" }} />
+      
+      {/* Radial vignette to black edges */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,hsl(220_20%_4%)_80%)]" />
 
       <div className="relative z-10 max-w-5xl mx-auto text-center">
         <motion.div
@@ -21,7 +24,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           transition={{ duration: 0.6 }}
           className="mb-6"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary text-sm font-medium backdrop-blur-sm">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/40 bg-primary/10 text-primary text-sm font-medium backdrop-blur-sm glow-pulse">
             <Zap className="h-3.5 w-3.5" />
             Potenciado por Inteligencia Artificial
           </span>
@@ -35,7 +38,10 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
         >
           <span className="text-foreground">Tu suite completa</span>
           <br />
-          <span className="bg-gradient-to-r from-primary via-orange-400 to-primary bg-clip-text text-transparent">
+          <span
+            className="bg-gradient-to-r from-blue-400 via-primary to-cyan-400 bg-clip-text text-transparent"
+            style={{ animation: "text-glow-pulse 3s ease-in-out infinite" }}
+          >
             inmobiliaria con IA
           </span>
         </motion.h1>
@@ -58,7 +64,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           <Button
             size="lg"
             onClick={onGetStarted}
-            className="group text-base px-8 py-6 rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
+            className="group text-base px-8 py-6 rounded-xl bg-gradient-to-r from-blue-600 via-primary to-cyan-500 hover:from-blue-500 hover:via-blue-400 hover:to-cyan-400 border-0 shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 glow-pulse"
           >
             <Sparkles className="h-5 w-5 mr-2" />
             Empezar Gratis
@@ -68,7 +74,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
             variant="outline"
             size="lg"
             onClick={onGetStarted}
-            className="text-base px-8 py-6 rounded-xl border-border/60 backdrop-blur-sm hover:bg-accent/50 transition-all duration-300"
+            className="text-base px-8 py-6 rounded-xl border-primary/30 backdrop-blur-sm hover:bg-primary/10 hover:border-primary/50 transition-all duration-300"
           >
             Ver Demo
           </Button>
@@ -87,7 +93,9 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
             { value: "∞", label: "Generaciones" },
           ].map((stat, i) => (
             <div key={i} className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-primary">{stat.value}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-primary" style={{ animation: "text-glow-pulse 3s ease-in-out infinite", animationDelay: `${i * 0.5}s` }}>
+                {stat.value}
+              </div>
               <div className="text-xs sm:text-sm text-muted-foreground mt-1">{stat.label}</div>
             </div>
           ))}

@@ -40,7 +40,7 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
 
   return (
     <section className="relative py-24 px-4" id="pricing">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.03] to-transparent" />
       <div className="max-w-4xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -51,7 +51,7 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Precios{" "}
-            <span className="bg-gradient-to-r from-primary to-orange-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-400 via-primary to-cyan-400 bg-clip-text text-transparent">
               simples y transparentes
             </span>
           </h2>
@@ -71,18 +71,18 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
               whileHover={{ y: -4 }}
               className={`relative rounded-2xl border p-8 transition-all duration-300 ${
                 plan.popular
-                  ? "border-primary/50 bg-card shadow-2xl shadow-primary/10 scale-[1.02]"
-                  : "border-border/50 bg-card/60 backdrop-blur-sm"
+                  ? "border-primary/50 bg-gradient-to-b from-primary/10 to-card shadow-2xl shadow-primary/15 scale-[1.02] glow-pulse"
+                  : "border-border/40 bg-card/50 backdrop-blur-xl"
               }`}
             >
               {plan.badge && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-primary-foreground text-xs font-semibold">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-blue-600 via-primary to-cyan-500 text-primary-foreground text-xs font-semibold shadow-lg shadow-primary/30">
                   {plan.badge}
                 </span>
               )}
 
               <div className="flex items-center gap-3 mb-6">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${plan.popular ? "bg-primary/20" : "bg-muted"}`}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${plan.popular ? "bg-primary/20 border border-primary/30" : "bg-muted border border-border/30"}`}>
                   <plan.icon className={`h-5 w-5 ${plan.popular ? "text-primary" : "text-muted-foreground"}`} />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground">{plan.name}</h3>
@@ -104,10 +104,10 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
 
               <Button
                 onClick={onGetStarted}
-                className={`w-full rounded-xl py-5 ${
+                className={`w-full rounded-xl py-5 transition-all duration-300 ${
                   plan.popular
-                    ? "shadow-lg shadow-primary/20"
-                    : ""
+                    ? "bg-gradient-to-r from-blue-600 via-primary to-cyan-500 hover:from-blue-500 hover:to-cyan-400 shadow-lg shadow-primary/25 border-0"
+                    : "border-primary/30 hover:bg-primary/10 hover:border-primary/50"
                 }`}
                 variant={plan.popular ? "default" : "outline"}
               >
