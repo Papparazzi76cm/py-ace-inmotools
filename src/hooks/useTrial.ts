@@ -46,6 +46,7 @@ interface TrialData {
 interface UsageData {
   todayUsage: Record<string, number>;
   totalUsage: Record<string, number>;
+  monthlyUsage: Record<string, number>;
 }
 
 export function useTrial() {
