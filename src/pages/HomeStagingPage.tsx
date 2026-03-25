@@ -231,6 +231,32 @@ const HomeStagingPage = () => {
             </div>
 
             <div>
+              <Label>Calidad de generación</Label>
+              <div className="grid grid-cols-2 gap-2 mt-1.5">
+                <Button
+                  type="button"
+                  variant={quality === "fast" ? "default" : "outline"}
+                  className={`h-auto py-3 flex flex-col gap-1 ${quality === "fast" ? "" : "border-border"}`}
+                  onClick={() => setQuality("fast")}
+                >
+                  <Zap className="h-4 w-4" />
+                  <span className="text-xs font-medium">Rápida</span>
+                  <span className="text-[10px] text-muted-foreground">1 uso</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant={quality === "premium" ? "default" : "outline"}
+                  className={`h-auto py-3 flex flex-col gap-1 ${quality === "premium" ? "bg-gradient-to-r from-primary to-accent border-0" : "border-border"}`}
+                  onClick={() => setQuality("premium")}
+                >
+                  <Crown className="h-4 w-4" />
+                  <span className="text-xs font-medium">Premium</span>
+                  <span className="text-[10px] text-muted-foreground">3 usos</span>
+                </Button>
+              </div>
+            </div>
+
+            <div>
               <Label>Instrucciones adicionales (opcional)</Label>
               <Textarea
                 value={customPrompt}
