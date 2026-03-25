@@ -29,21 +29,16 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="p-4">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-sidebar-primary flex items-center justify-center flex-shrink-0">
-            <span className="text-sidebar-primary-foreground font-bold text-sm">IA</span>
+        {collapsed ? (
+          <PynmoLogo size="sm" showText={false} />
+        ) : (
+          <div className="flex flex-col gap-0.5">
+            <PynmoLogo size="sm" />
+            <span className="text-sidebar-muted text-[10px] leading-tight ml-9">
+              Playground IA
+            </span>
           </div>
-          {!collapsed && (
-            <div className="flex flex-col">
-              <span className="text-sidebar-primary-foreground font-semibold text-sm leading-tight">
-                InmoTools
-              </span>
-              <span className="text-sidebar-muted text-[10px] leading-tight">
-                Playground IA
-              </span>
-            </div>
-          )}
-        </div>
+        )}
       </SidebarHeader>
 
       <SidebarContent>
