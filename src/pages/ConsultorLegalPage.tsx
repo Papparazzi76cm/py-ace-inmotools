@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Scale, Sparkles, Loader2, Send } from "lucide-react";
 import { useInmoAI } from "@/hooks/useInmoAI";
+import { UsageLimitBanner } from "@/components/UsageLimitBanner";
 
 const ConsultorLegalPage = () => {
   const [consulta, setConsulta] = useState("");
