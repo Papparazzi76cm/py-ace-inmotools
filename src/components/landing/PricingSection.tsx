@@ -45,7 +45,7 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
       period: "/mes",
       icon: Building2,
       features: [
-        "Máximo usuarios",
+        "Máximo 10 usuarios",
         "Acceso completo a todas las herramientas",
         "Generaciones ilimitadas con IA",
         "Soporte prioritario",
@@ -60,7 +60,7 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
       badge: "Ahorrá 20%",
       icon: Users,
       features: [
-        "Máximo 20 usuarios",
+        "Máximo 10 usuarios",
         "Todo del plan mensual de agencia",
         "Soporte dedicado",
         "Nuevas herramientas primero",
