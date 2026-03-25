@@ -9,6 +9,7 @@ import { FileSpreadsheet, Sparkles, Loader2, Copy, Download, Printer } from "luc
 import { toast } from "sonner";
 import { useInmoAI } from "@/hooks/useInmoAI";
 import { UsageLimitBanner } from "@/components/UsageLimitBanner";
+import { exportInformePdf } from "@/lib/exportInformePdf";
 
 const tiposInmueble = [
   { value: "casa", label: "Casa" },
