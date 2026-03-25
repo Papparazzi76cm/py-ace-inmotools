@@ -46,6 +46,7 @@ const tiposExterior = [
 
 const HomeStagingPage = () => {
   const [style, setStyle] = useState("moderno");
+  const [quality, setQuality] = useState<"fast" | "premium">("fast");
   const [tipoEspacio, setTipoEspacio] = useState<"interior" | "exterior">("interior");
   const [estancia, setEstancia] = useState("salon");
   const [customPrompt, setCustomPrompt] = useState("");
@@ -55,6 +56,8 @@ const HomeStagingPage = () => {
   const [showComparison, setShowComparison] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { canUseTool, logUsage, trial } = useTrialContext();
+
+  const usageCost = quality === "premium" ? 3 : 1;
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
