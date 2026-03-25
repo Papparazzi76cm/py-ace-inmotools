@@ -73,6 +73,16 @@ const ContratosPage = () => {
     toast.success("Contrato descargado");
   };
 
+  const descargarPdf = async () => {
+    if (!resultado) return;
+    await exportContratoPdf(
+      resultado,
+      { tipo: tipoContrato, partes, inmueble, condiciones },
+      profile || undefined
+    );
+    toast.success("PDF descargado");
+  };
+
   return (
     <div className="max-w-5xl mx-auto animate-fade-in">
       <UsageLimitBanner toolId="contratos" />
