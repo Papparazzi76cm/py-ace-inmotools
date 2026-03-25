@@ -102,6 +102,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-3">
+        {!collapsed && <TrialCountdown />}
         {!collapsed && user && (
           <div className="space-y-2">
             <p className="text-[11px] text-sidebar-muted truncate px-1">
