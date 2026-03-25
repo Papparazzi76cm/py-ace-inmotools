@@ -102,22 +102,12 @@ Responde en JSON:
     }
 
     const aiData = await response.json();
-    
-    // Extract from tool call response
-    const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
+    const content = aiData.choices?.[0]?.message?.content || "{}";
     let result;
-    
-    if (toolCall?.function?.arguments) {
-      const parsed = JSON.parse(toolCall.function.arguments);
-      result = parsed.result;
-    } else {
-      // Fallback: try to parse content as JSON
-      const content = aiData.choices?.[0]?.message?.content || "";
-      try {
-        result = JSON.parse(content);
-      } catch {
-        result = { raw: content };
-      }
+    try {
+      result = JSON.parse(content);
+    } catch {
+      result = { raw: content };
     }
 
     return new Response(JSON.stringify({ result }), {
