@@ -15,7 +15,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full blur-[180px] glow-pulse bg-primary/10" style={{ animationDelay: "0.75s" }} />
       
       {/* Radial vignette to black edges */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,hsl(220_20%_4%)_80%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,hsl(215_45%_12%)_80%)]" />
 
       <div className="relative z-10 max-w-5xl mx-auto text-center">
         <motion.div
