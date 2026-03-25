@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Copy, UserPlus, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useInmoAI } from "@/hooks/useInmoAI";
+import { UsageLimitBanner } from "@/components/UsageLimitBanner";
 
 const CaptacionPage = () => {
   const [zona, setZona] = useState("");

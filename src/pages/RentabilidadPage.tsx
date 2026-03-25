@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BarChart3, TrendingUp, Home, Building } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { UsageLimitBanner } from "@/components/UsageLimitBanner";
 
 const RentabilidadPage = () => {
   const [precioCompra, setPrecioCompra] = useState("");

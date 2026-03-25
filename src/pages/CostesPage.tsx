@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calculator, ArrowDown, ArrowUp } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { UsageLimitBanner } from "@/components/UsageLimitBanner";
 
 const CostesPage = () => {
   const [precio, setPrecio] = useState("");
