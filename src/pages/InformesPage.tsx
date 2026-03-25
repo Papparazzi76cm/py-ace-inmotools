@@ -246,6 +246,9 @@ const InformesPage = () => {
                   <Button variant="outline" size="sm" onClick={imprimirInforme}>
                     <Printer className="h-3.5 w-3.5 mr-1.5" /> Imprimir
                   </Button>
+                  <Button size="sm" onClick={descargarPdf} className="bg-primary">
+                    <Download className="h-3.5 w-3.5 mr-1.5" /> Descargar PDF
+                  </Button>
                 </div>
               </div>
 
