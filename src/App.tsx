@@ -19,6 +19,7 @@ import CaptacionPage from "./pages/CaptacionPage";
 import ContratosPage from "./pages/ContratosPage";
 import HomeStagingPage from "./pages/HomeStagingPage";
 import InformesPage from "./pages/InformesPage";
+import RolePlayPage from "./pages/RolePlayPage";
 import ToolPlaceholder from "./pages/ToolPlaceholder";
 import NotFound from "./pages/NotFound";
 
