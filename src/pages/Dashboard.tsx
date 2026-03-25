@@ -11,7 +11,7 @@ const Dashboard = () => {
     <div className="max-w-5xl mx-auto animate-fade-in">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-1">
-          <PynmoLogo size="lg" showText={false} />
+          <PynmoLogo size="lg" />
           <h1 className="text-2xl font-semibold text-foreground">
             Bienvenido a <span className="text-foreground">Pynmo</span><span className="text-primary">tools</span>
           </h1>

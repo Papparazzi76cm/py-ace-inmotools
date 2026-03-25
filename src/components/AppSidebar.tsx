@@ -30,16 +30,14 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="p-4">
-        {collapsed ? (
-          <PynmoLogo size="sm" showText={false} />
-        ) : (
-          <div className="flex flex-col gap-0.5">
-            <PynmoLogo size="sm" />
-            <span className="text-sidebar-muted text-[10px] leading-tight ml-9">
+        <div className="flex flex-col gap-0.5">
+          <PynmoLogo size={collapsed ? "sm" : "md"} />
+          {!collapsed && (
+            <span className="text-sidebar-muted text-[10px] leading-tight">
               Playground IA
             </span>
-          </div>
-        )}
+          )}
+        </div>
       </SidebarHeader>
 
       <SidebarContent>
