@@ -42,7 +42,23 @@ Genera anuncios adaptados a cada plataforma. Responde en JSON:
       case "entorno": {
         systemPrompt = `Eres un experto en el mercado inmobiliario de Paraguay. Conoces bien las zonas, barrios y ciudades.
 Genera una descripción atractiva del entorno/zona para uso inmobiliario.
-Responde en JSON: {"descripcion": "texto descriptivo del entorno", "servicios": ["servicio 1", "servicio 2"], "estilo_vida": "descripción del estilo de vida de la zona", "atractivos": ["atractivo 1", "atractivo 2"]}`;
+Incluye también un análisis de precios estimados de la zona.
+Responde en JSON: {
+  "descripcion": "texto descriptivo del entorno",
+  "servicios": ["servicio 1", "servicio 2"],
+  "estilo_vida": "descripción del estilo de vida de la zona",
+  "atractivos": ["atractivo 1", "atractivo 2"],
+  "precios_zona": {
+    "resumen": "descripción general de los precios en la zona",
+    "rangos": [
+      {"tipo": "Casa", "rango_min": 80000, "rango_max": 150000, "moneda": "USD"},
+      {"tipo": "Departamento", "rango_min": 50000, "rango_max": 100000, "moneda": "USD"},
+      {"tipo": "Terreno (m²)", "rango_min": 200, "rango_max": 600, "moneda": "USD"}
+    ],
+    "tendencia": "alza|estable|baja",
+    "nivel": "economico|medio|medio-alto|alto|premium"
+  }
+}`;
         userPrompt = `Describe el entorno inmobiliario de: ${data.zona}. ${data.detalles || ""}`;
         break;
       }
