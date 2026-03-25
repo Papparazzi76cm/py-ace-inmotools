@@ -79,23 +79,7 @@ Responde en JSON:
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt },
         ],
-        tools: [
-          {
-            type: "function",
-            function: {
-              name: "format_response",
-              description: "Format the AI response as structured JSON",
-              parameters: {
-                type: "object",
-                properties: {
-                  result: { type: "object", description: "The structured response" },
-                },
-                required: ["result"],
-              },
-            },
-          },
-        ],
-        tool_choice: { type: "function", function: { name: "format_response" } },
+        response_format: { type: "json_object" },
       }),
     });
 
