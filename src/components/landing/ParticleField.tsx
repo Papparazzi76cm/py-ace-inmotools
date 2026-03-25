@@ -10,7 +10,7 @@ const ParticleField = () => {
     if (!ctx) return;
 
     let animId: number;
-    let particles: { x: number; y: number; vx: number; vy: number; size: number; opacity: number }[] = [];
+    let particles: { x: number; y: number; vx: number; vy: number; size: number; opacity: number; hue: number }[] = [];
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -19,19 +19,26 @@ const ParticleField = () => {
     resize();
     window.addEventListener("resize", resize);
 
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 90; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
         size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.5 + 0.1,
+        opacity: Math.random() * 0.6 + 0.1,
+        hue: 200 + Math.random() * 30, // blue range
       });
     }
 
+    let time = 0;
     const draw = () => {
+      time += 0.01;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Pulsing global opacity
+      const pulse = 0.6 + Math.sin(time * 2) * 0.2;
+
       particles.forEach((p, i) => {
         p.x += p.vx;
         p.y += p.vy;
@@ -40,21 +47,22 @@ const ParticleField = () => {
         if (p.y < 0) p.y = canvas.height;
         if (p.y > canvas.height) p.y = 0;
 
+        const particlePulse = p.opacity * (0.7 + Math.sin(time * 3 + i) * 0.3);
+
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(227, 114, 34, ${p.opacity})`;
+        ctx.fillStyle = `hsla(${p.hue}, 100%, 60%, ${particlePulse * pulse})`;
         ctx.fill();
 
-        // Draw connections
         for (let j = i + 1; j < particles.length; j++) {
           const dx = p.x - particles[j].x;
           const dy = p.y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
+          if (dist < 130) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(227, 114, 34, ${0.06 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `hsla(210, 100%, 55%, ${0.08 * (1 - dist / 130) * pulse})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -74,7 +82,6 @@ const ParticleField = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0.6 }}
     />
   );
 };
