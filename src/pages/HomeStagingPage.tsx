@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Image, Sparkles, Loader2, Upload, Download, ArrowLeftRight } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { UsageLimitBanner } from "@/components/UsageLimitBanner";
@@ -47,6 +48,7 @@ const HomeStagingPage = () => {
   const [style, setStyle] = useState("moderno");
   const [tipoEspacio, setTipoEspacio] = useState<"interior" | "exterior">("interior");
   const [estancia, setEstancia] = useState("salon");
+  const [customPrompt, setCustomPrompt] = useState("");
   const [originalImage, setOriginalImage] = useState<string | null>(null);
   const [resultImage, setResultImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -100,7 +102,7 @@ const HomeStagingPage = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke("home-staging", {
-        body: { imageBase64: originalImage, style, tipoEspacio, estancia },
+        body: { imageBase64: originalImage, style, tipoEspacio, estancia, customPrompt: customPrompt.trim() || undefined },
       });
 
       if (error) throw error;
@@ -221,6 +223,18 @@ const HomeStagingPage = () => {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div>
+              <Label>Instrucciones adicionales (opcional)</Label>
+              <Textarea
+                value={customPrompt}
+                onChange={(e) => setCustomPrompt(e.target.value)}
+                placeholder="Ej: Añade una chimenea moderna, cambia el suelo a madera clara, pon cortinas blancas..."
+                className="mt-1.5 min-h-[80px] text-sm"
+                maxLength={500}
+              />
+              <p className="text-xs text-muted-foreground mt-1">{customPrompt.length}/500</p>
             </div>
 
             <Button onClick={generate} className="w-full" disabled={loading || !originalImage}>

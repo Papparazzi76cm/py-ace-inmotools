@@ -9,7 +9,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { imageBase64, style, tipoEspacio, estancia } = await req.json();
+    const { imageBase64, style, tipoEspacio, estancia, customPrompt } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
@@ -28,7 +28,11 @@ serve(async (req) => {
       vacio: `Elimina todos los muebles y decoración de ${esInterior ? "esta estancia (" + espacioLabel + ")" : "este espacio exterior (" + espacioLabel + ")"}, dejándolo completamente vacío pero limpio y listo para mostrar. Mantén exactamente la misma perspectiva y elementos estructurales. Muestra solo las superficies limpias.`,
     };
 
-    const prompt = stylePrompts[style] || stylePrompts.moderno;
+    let prompt = stylePrompts[style] || stylePrompts.moderno;
+
+    if (customPrompt && typeof customPrompt === "string" && customPrompt.trim().length > 0) {
+      prompt += ` Además, aplica las siguientes instrucciones del usuario: ${customPrompt.trim().slice(0, 500)}`;
+    }
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
