@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Sparkles, X } from "lucide-react";
+import { X } from "lucide-react";
+import PynmoLogo from "@/components/PynmoLogo";
 import { motion, AnimatePresence } from "framer-motion";
 import ParticleField from "@/components/landing/ParticleField";
 import LandingNav from "@/components/landing/LandingNav";
@@ -96,12 +97,9 @@ const AuthPage = () => {
                   >
                     <X className="h-4 w-4" />
                   </button>
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
-                      <Sparkles className="h-5 w-5 text-primary-foreground" />
-                    </div>
+                  <div className="flex items-center justify-center mb-2">
+                    <PynmoLogo size="lg" />
                   </div>
-                  <CardTitle className="text-xl">InmoTools</CardTitle>
                   <p className="text-sm text-muted-foreground">
                     {isLogin ? "Inicia sesión en tu cuenta" : "Crea tu cuenta"}
                   </p>

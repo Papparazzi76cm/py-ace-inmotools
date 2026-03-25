@@ -2,7 +2,7 @@ import { tools } from "@/lib/tools";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles } from "lucide-react";
+import PynmoLogo from "@/components/PynmoLogo";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -10,10 +10,10 @@ const Dashboard = () => {
   return (
     <div className="max-w-5xl mx-auto animate-fade-in">
       <div className="mb-8">
-        <div className="flex items-center gap-2 mb-1">
-          <Sparkles className="h-5 w-5 text-primary" />
+        <div className="flex items-center gap-3 mb-1">
+          <PynmoLogo size="lg" showText={false} />
           <h1 className="text-2xl font-semibold text-foreground">
-            Bienvenido a InmoTools
+            Bienvenido a <span className="text-foreground">Pynmo</span><span className="text-primary">tools</span>
           </h1>
         </div>
         <p className="text-muted-foreground">
