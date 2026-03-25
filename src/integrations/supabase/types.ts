@@ -16,7 +16,10 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
+          agency_email: string | null
+          agency_logo_url: string | null
           agency_name: string | null
+          agency_phone: string | null
           created_at: string
           full_name: string | null
           id: string
@@ -24,7 +27,10 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          agency_email?: string | null
+          agency_logo_url?: string | null
           agency_name?: string | null
+          agency_phone?: string | null
           created_at?: string
           full_name?: string | null
           id?: string
@@ -32,7 +38,10 @@ export type Database = {
           user_id: string
         }
         Update: {
+          agency_email?: string | null
+          agency_logo_url?: string | null
           agency_name?: string | null
+          agency_phone?: string | null
           created_at?: string
           full_name?: string | null
           id?: string
