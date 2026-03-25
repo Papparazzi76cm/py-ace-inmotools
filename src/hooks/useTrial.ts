@@ -14,6 +14,7 @@ export interface TrialLimits {
   costes: { type: "daily"; max: 10 };
   rentabilidad: { type: "daily"; max: 10 };
   contratos: { type: "daily"; max: 3 };
+  roleplay: { type: "daily"; max: 3 };
 }
 
 export const TRIAL_LIMITS: TrialLimits = {
@@ -28,6 +29,7 @@ export const TRIAL_LIMITS: TrialLimits = {
   costes: { type: "daily", max: 10 },
   rentabilidad: { type: "daily", max: 10 },
   contratos: { type: "daily", max: 3 },
+  roleplay: { type: "daily", max: 3 },
 };
 
 // Monthly limits for paid users (only home-staging has one)

@@ -11,6 +11,7 @@ import {
   UserPlus,
   FileSignature,
   LayoutDashboard,
+  Users,
 } from "lucide-react";
 
 export interface Tool {
@@ -19,7 +20,7 @@ export interface Tool {
   description: string;
   icon: typeof Image;
   path: string;
-  category: "captacion" | "comercializacion" | "analisis" | "legal" | "contenido";
+  category: "captacion" | "comercializacion" | "analisis" | "legal" | "contenido" | "formacion";
   ready: boolean;
 }
 
@@ -121,6 +122,15 @@ export const tools: Tool[] = [
     icon: FileSignature,
     path: "/herramientas/contratos",
     category: "legal",
+    ready: true,
+  },
+  {
+    id: "roleplay",
+    title: "Asistente de Role Play",
+    description: "Entrena negociación con clientes simulados por IA",
+    icon: Users,
+    path: "/herramientas/roleplay",
+    category: "formacion",
     ready: true,
   },
 ];
