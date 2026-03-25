@@ -75,7 +75,7 @@ export const tools: Tool[] = [
     icon: FileSpreadsheet,
     path: "/herramientas/informes",
     category: "comercializacion",
-    ready: false,
+    ready: true,
   },
   {
     id: "anuncios",
