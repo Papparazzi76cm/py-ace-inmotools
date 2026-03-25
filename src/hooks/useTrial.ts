@@ -175,19 +175,30 @@ export function useTrial() {
     fetchUsage();
   }, [fetchTrial, fetchUsage]);
 
-  const canUseTool = (toolId: string): { allowed: boolean; used: number; max: number; limitType: string } => {
-    if (trial.isPaid) return { allowed: true, used: 0, max: Infinity, limitType: "none" };
+  const canUseTool = (toolId: string, cost: number = 1): { allowed: boolean; used: number; max: number; limitType: string } => {
+    // Paid users: only home-staging has a monthly limit
+    if (trial.isPaid) {
+      const monthlyMax = PAID_MONTHLY_LIMITS[toolId];
+      if (monthlyMax) {
+        const used = usage.monthlyUsage[toolId] || 0;
+        return { allowed: used + cost <= monthlyMax, used, max: monthlyMax, limitType: "monthly" };
+      }
+      return { allowed: true, used: 0, max: Infinity, limitType: "none" };
+    }
+
+    // Trial expired
     if (trial.isTrialExpired) return { allowed: false, used: 0, max: 0, limitType: "expired" };
 
+    // Trial limits
     const limit = TRIAL_LIMITS[toolId as keyof TrialLimits];
     if (!limit) return { allowed: true, used: 0, max: Infinity, limitType: "none" };
 
     if (limit.type === "daily") {
       const used = usage.todayUsage[toolId] || 0;
-      return { allowed: used < limit.max, used, max: limit.max, limitType: "daily" };
+      return { allowed: used + cost <= limit.max, used, max: limit.max, limitType: "daily" };
     } else {
       const used = usage.totalUsage[toolId] || 0;
-      return { allowed: used < limit.max, used, max: limit.max, limitType: "total" };
+      return { allowed: used + cost <= limit.max, used, max: limit.max, limitType: "total" };
     }
   };
 
