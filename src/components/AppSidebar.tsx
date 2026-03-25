@@ -1,6 +1,8 @@
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import { tools, dashboardItem } from "@/lib/tools";
+import { useAuth } from "@/contexts/AuthContext";
+import { LogOut } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -15,11 +17,13 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
+  const { signOut, user } = useAuth();
 
   return (
     <Sidebar collapsible="icon">
@@ -96,11 +100,32 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4">
-        {!collapsed && (
-          <div className="text-[10px] text-sidebar-muted text-center">
-            InmoTools v1.0 · Paraguay
+      <SidebarFooter className="p-3">
+        {!collapsed && user && (
+          <div className="space-y-2">
+            <p className="text-[11px] text-sidebar-muted truncate px-1">
+              {user.email}
+            </p>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={signOut}
+              className="w-full justify-start text-sidebar-muted hover:text-sidebar-foreground hover:bg-sidebar-accent/50 text-xs"
+            >
+              <LogOut className="h-3.5 w-3.5 mr-2" />
+              Cerrar sesión
+            </Button>
           </div>
+        )}
+        {collapsed && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={signOut}
+            className="w-full text-sidebar-muted hover:text-sidebar-foreground hover:bg-sidebar-accent/50"
+          >
+            <LogOut className="h-4 w-4" />
+          </Button>
         )}
       </SidebarFooter>
     </Sidebar>
