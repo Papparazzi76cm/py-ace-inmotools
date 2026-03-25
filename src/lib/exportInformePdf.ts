@@ -10,6 +10,7 @@ interface InformeData {
   recomendaciones: string[];
   metodologia: string;
   disclaimer: string;
+  analisis_visual?: string;
 }
 
 interface InmuebleData {
@@ -23,7 +24,14 @@ interface InmuebleData {
   estado?: string;
 }
 
-export function exportInformePdf(informe: InformeData, inmueble: InmuebleData) {
+interface AgencyData {
+  agency_name?: string;
+  agency_phone?: string;
+  agency_email?: string;
+  agency_logo_url?: string;
+}
+
+export async function exportInformePdf(informe: InformeData, inmueble: InmuebleData, agency?: AgencyData) {
   const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
   const pageWidth = doc.internal.pageSize.getWidth();
   const margin = 20;
@@ -79,20 +87,54 @@ export function exportInformePdf(informe: InformeData, inmueble: InmuebleData) {
     y += 2;
   };
 
-  // === HEADER ===
+  // === HEADER with agency branding ===
   doc.setFillColor(...primaryColor);
-  doc.rect(0, 0, pageWidth, 40, "F");
+  doc.rect(0, 0, pageWidth, 44, "F");
+
+  let headerTextX = margin;
+
+  // Try to add agency logo
+  if (agency?.agency_logo_url) {
+    try {
+      const img = await loadImage(agency.agency_logo_url);
+      doc.addImage(img, "PNG", margin, 6, 32, 32);
+      headerTextX = margin + 36;
+    } catch {
+      // Logo failed to load, skip
+    }
+  }
+
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(18);
+  doc.setFontSize(16);
   doc.setTextColor(255, 255, 255);
-  doc.text("INFORME DE VALORACIÓN", margin, 18);
+  doc.text("INFORME DE VALORACIÓN", headerTextX, 16);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  doc.text("INMOBILIARIA", margin, 26);
+  doc.text("INMOBILIARIA", headerTextX, 24);
+
+  if (agency?.agency_name) {
+    doc.setFontSize(9);
+    doc.text(agency.agency_name, headerTextX, 32);
+  }
+
+  // Right side: date + agency contact
   doc.setFontSize(8);
-  doc.text(`Fecha: ${new Date().toLocaleDateString("es-ES", { day: "2-digit", month: "long", year: "numeric" })}`, pageWidth - margin - 50, 18);
-  doc.text("Generado por Pynmo Tools", pageWidth - margin - 50, 24);
-  y = 48;
+  const rightX = pageWidth - margin;
+  doc.text(
+    `Fecha: ${new Date().toLocaleDateString("es-ES", { day: "2-digit", month: "long", year: "numeric" })}`,
+    rightX, 14, { align: "right" }
+  );
+  if (agency?.agency_phone) {
+    doc.text(`Tel: ${agency.agency_phone}`, rightX, 20, { align: "right" });
+  }
+  if (agency?.agency_email) {
+    doc.text(agency.agency_email, rightX, 26, { align: "right" });
+  }
+  if (!agency?.agency_name && !agency?.agency_phone) {
+    doc.text("Generado por Pynmo Tools", rightX, 20, { align: "right" });
+  }
+
+  y = 52;
 
   // === PROPERTY DATA TABLE ===
   const tableData = [
@@ -122,7 +164,7 @@ export function exportInformePdf(informe: InformeData, inmueble: InmuebleData) {
   addSection("RESUMEN EJECUTIVO");
   addParagraph(informe.resumen_ejecutivo);
 
-  addSection("VALORACIÓN ESTIMADA", [22, 163, 74]);
+  addSection("VALORACIÓN ESTIMADA", greenColor);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(11);
   doc.setTextColor(...darkColor);
@@ -133,6 +175,12 @@ export function exportInformePdf(informe: InformeData, inmueble: InmuebleData) {
 
   addSection("ANÁLISIS DE MERCADO");
   addParagraph(informe.analisis_mercado);
+
+  // === VISUAL ANALYSIS (if available) ===
+  if (informe.analisis_visual) {
+    addSection("ANÁLISIS VISUAL DEL INMUEBLE", [139, 92, 246]);
+    addParagraph(informe.analisis_visual);
+  }
 
   addSection("FACTORES POSITIVOS", greenColor);
   addBulletList(informe.factores_positivos, greenColor, "✓");
@@ -160,17 +208,35 @@ export function exportInformePdf(informe: InformeData, inmueble: InmuebleData) {
   doc.setFontSize(7);
   doc.setTextColor(...mutedColor);
   doc.text(disclaimerLines, margin + 4, y + 5);
-  y += disclaimerHeight + 4;
 
   // === FOOTER on every page ===
   const totalPages = doc.getNumberOfPages();
+  const footerText = agency?.agency_name || "Pynmo Tools";
   for (let i = 1; i <= totalPages; i++) {
     doc.setPage(i);
     doc.setFontSize(7);
     doc.setTextColor(...mutedColor);
-    doc.text(`Pynmo Tools — Informe de Valoración`, margin, 290);
+    doc.text(`${footerText} — Informe de Valoración`, margin, 290);
     doc.text(`Página ${i} de ${totalPages}`, pageWidth - margin - 25, 290);
   }
 
   doc.save(`informe-valoracion-${Date.now()}.pdf`);
+}
+
+function loadImage(url: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return reject("No canvas context");
+      ctx.drawImage(img, 0, 0);
+      resolve(canvas.toDataURL("image/png"));
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
 }
