@@ -13,6 +13,7 @@ import LandingNav from "@/components/landing/LandingNav";
 import HeroSection from "@/components/landing/HeroSection";
 import FeatureCards from "@/components/landing/FeatureCards";
 import PricingSection from "@/components/landing/PricingSection";
+import HowItWorksSection from "@/components/landing/HowItWorksSection";
 import FooterSection from "@/components/landing/FooterSection";
 
 const AuthPage = () => {
