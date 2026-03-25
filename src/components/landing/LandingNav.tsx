@@ -14,8 +14,8 @@ const LandingNav = ({ onGetStarted }: LandingNavProps) => {
       transition={{ duration: 0.5 }}
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/40"
     >
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-4 h-16">
-        <PynmoLogo size="md" />
+      <div className="max-w-6xl mx-auto flex items-center justify-between px-4 h-14 sm:h-16">
+        <PynmoLogo size="sm" className="flex-shrink-0" />
 
         <div className="hidden sm:flex items-center gap-6 text-sm text-muted-foreground">
           <a href="#features" className="hover:text-foreground transition-colors">Herramientas</a>
@@ -23,11 +23,11 @@ const LandingNav = ({ onGetStarted }: LandingNavProps) => {
           <a href="#pricing" className="hover:text-foreground transition-colors">Precios</a>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={onGetStarted}>
+        <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+          <Button variant="ghost" size="sm" onClick={onGetStarted} className="text-xs sm:text-sm px-2 sm:px-3">
             Iniciar Sesión
           </Button>
-          <Button size="sm" onClick={onGetStarted} className="rounded-lg shadow-sm shadow-primary/20">
+          <Button size="sm" onClick={onGetStarted} className="rounded-lg shadow-sm shadow-primary/20 text-xs sm:text-sm px-2.5 sm:px-3">
             Registrarse
           </Button>
         </div>
