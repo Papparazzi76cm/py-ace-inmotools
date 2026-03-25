@@ -16,6 +16,7 @@ import AnunciosPage from "./pages/AnunciosPage";
 import EntornoPage from "./pages/EntornoPage";
 import GuionesPage from "./pages/GuionesPage";
 import CaptacionPage from "./pages/CaptacionPage";
+import ContratosPage from "./pages/ContratosPage";
 import HomeStagingPage from "./pages/HomeStagingPage";
 import InformesPage from "./pages/InformesPage";
 import ToolPlaceholder from "./pages/ToolPlaceholder";
@@ -49,6 +50,7 @@ function ProtectedRoutes() {
           <Route path="/herramientas/entorno" element={<EntornoPage />} />
           <Route path="/herramientas/guiones" element={<GuionesPage />} />
           <Route path="/herramientas/captacion" element={<CaptacionPage />} />
+          <Route path="/herramientas/contratos" element={<ContratosPage />} />
           <Route path="/herramientas/home-staging" element={<HomeStagingPage />} />
           <Route path="/herramientas/informes" element={<InformesPage />} />
           <Route path="/herramientas/:toolId" element={<ToolPlaceholder />} />

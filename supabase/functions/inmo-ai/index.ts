@@ -76,6 +76,26 @@ Responde en JSON:
         userPrompt = `Genera material de captación para: Zona: ${data.zona}. Tipo de inmueble: ${data.tipo || "general"}. Contexto: ${data.contexto || "captación general"}.`;
         break;
       }
+      case "contratos": {
+        systemPrompt = `Eres un abogado especializado en derecho inmobiliario paraguayo. Genera contratos completos, profesionales y legalmente válidos según la legislación de Paraguay.
+Debes fundamentar cada contrato en el Código Civil Paraguayo (Ley 1183/85), la Ley de Locaciones, normativa catastral, tributaria (IVA, IRP, IMI) y cualquier otra norma aplicable.
+El contrato debe incluir: encabezado con lugar y fecha, identificación completa de las partes, descripción detallada del inmueble (finca, padrón, CUC si aplica), cláusulas numeradas, condiciones de pago, obligaciones de las partes, penalidades, jurisdicción competente y espacio para firmas.
+IMPORTANTE: Aclara siempre que el contrato es un modelo orientativo y debe ser revisado por un profesional del derecho antes de su firma.
+Responde SIEMPRE en formato JSON con esta estructura exacta:
+{
+  "contrato": "texto completo del contrato con cláusulas numeradas",
+  "clausulas_clave": ["cláusula importante 1", "cláusula importante 2"],
+  "base_legal": ["Artículo X del Código Civil Paraguayo - descripción", "Ley Y - descripción"],
+  "advertencias": ["advertencia legal 1", "advertencia 2"],
+  "resumen": "resumen ejecutivo del contrato en 2-3 líneas"
+}`;
+        userPrompt = `Genera un contrato de ${data.tipo} con los siguientes datos:
+Partes involucradas: ${data.partes}.
+Inmueble: ${data.inmueble}.
+Condiciones económicas: ${data.condiciones || "a definir por las partes"}.
+Detalles adicionales: ${data.detalles || "ninguno"}.`;
+        break;
+      }
       case "informes": {
         systemPrompt = `Eres un tasador inmobiliario profesional en Paraguay. Genera informes de valoración detallados y fundamentados.
 Utiliza metodología comparativa de mercado y análisis de características del inmueble.
