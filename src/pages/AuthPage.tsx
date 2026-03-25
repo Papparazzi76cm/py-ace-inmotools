@@ -66,6 +66,7 @@ const AuthPage = () => {
 
       <HeroSection onGetStarted={() => openAuth(false)} />
       <FeatureCards />
+      <HowItWorksSection />
       <PricingSection onGetStarted={() => openAuth(false)} />
       <FooterSection />
 
