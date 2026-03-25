@@ -16,6 +16,7 @@ import AnunciosPage from "./pages/AnunciosPage";
 import EntornoPage from "./pages/EntornoPage";
 import GuionesPage from "./pages/GuionesPage";
 import CaptacionPage from "./pages/CaptacionPage";
+import HomeStagingPage from "./pages/HomeStagingPage";
 import ToolPlaceholder from "./pages/ToolPlaceholder";
 import NotFound from "./pages/NotFound";
 
