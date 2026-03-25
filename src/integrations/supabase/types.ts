@@ -41,6 +41,57 @@ export type Database = {
         }
         Relationships: []
       }
+      usage_logs: {
+        Row: {
+          created_at: string
+          id: string
+          tool_id: string
+          used_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          tool_id: string
+          used_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          tool_id?: string
+          used_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_trials: {
+        Row: {
+          created_at: string
+          id: string
+          is_paid: boolean
+          trial_end: string
+          trial_start: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_paid?: boolean
+          trial_end?: string
+          trial_start?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_paid?: boolean
+          trial_end?: string
+          trial_start?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

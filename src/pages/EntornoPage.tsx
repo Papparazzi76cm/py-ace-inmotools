@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { MapPin, Sparkles, Loader2 } from "lucide-react";
 import { useInmoAI } from "@/hooks/useInmoAI";
+import { UsageLimitBanner } from "@/components/UsageLimitBanner";
 
 const EntornoPage = () => {
   const [zona, setZona] = useState("");
@@ -26,6 +27,7 @@ const EntornoPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
+      <UsageLimitBanner toolId="entorno" />
       <div className="flex items-center gap-2 mb-6">
         <MapPin className="h-5 w-5 text-primary" />
         <h1 className="text-2xl font-semibold">Descripción de Entorno</h1>

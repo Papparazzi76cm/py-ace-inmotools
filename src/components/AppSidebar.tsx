@@ -2,6 +2,7 @@ import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import { tools, dashboardItem } from "@/lib/tools";
 import { useAuth } from "@/contexts/AuthContext";
+import { TrialCountdown } from "@/components/TrialCountdown";
 import { LogOut } from "lucide-react";
 import {
   Sidebar,
@@ -101,6 +102,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-3">
+        {!collapsed && <TrialCountdown />}
         {!collapsed && user && (
           <div className="space-y-2">
             <p className="text-[11px] text-sidebar-muted truncate px-1">

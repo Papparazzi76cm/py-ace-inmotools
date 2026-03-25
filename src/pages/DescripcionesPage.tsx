@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Copy, FileText, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useInmoAI } from "@/hooks/useInmoAI";
+import { UsageLimitBanner } from "@/components/UsageLimitBanner";
 
 const estilos = [
   { value: "formal", label: "Formal" },
@@ -47,6 +48,7 @@ const DescripcionesPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
+      <UsageLimitBanner toolId="descripciones" />
       <div className="flex items-center gap-2 mb-6">
         <FileText className="h-5 w-5 text-primary" />
         <h1 className="text-2xl font-semibold">Generador de Descripciones</h1>

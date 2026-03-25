@@ -1,0 +1,187 @@
+import { useState, useEffect, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+
+export interface TrialLimits {
+  "home-staging": { type: "total"; max: 30 };
+  "consultor-legal": { type: "daily"; max: 3 };
+  descripciones: { type: "daily"; max: 3 };
+  anuncios: { type: "daily"; max: 3 };
+  entorno: { type: "daily"; max: 3 };
+  guiones: { type: "daily"; max: 3 };
+  captacion: { type: "daily"; max: 3 };
+  costes: { type: "daily"; max: 10 };
+  rentabilidad: { type: "daily"; max: 10 };
+}
+
+export const TRIAL_LIMITS: TrialLimits = {
+  "home-staging": { type: "total", max: 30 },
+  "consultor-legal": { type: "daily", max: 3 },
+  descripciones: { type: "daily", max: 3 },
+  anuncios: { type: "daily", max: 3 },
+  entorno: { type: "daily", max: 3 },
+  guiones: { type: "daily", max: 3 },
+  captacion: { type: "daily", max: 3 },
+  costes: { type: "daily", max: 10 },
+  rentabilidad: { type: "daily", max: 10 },
+};
+
+interface TrialData {
+  trialStart: Date | null;
+  trialEnd: Date | null;
+  isPaid: boolean;
+  isTrialActive: boolean;
+  isTrialExpired: boolean;
+  daysRemaining: number;
+  hoursRemaining: number;
+  minutesRemaining: number;
+  secondsRemaining: number;
+}
+
+interface UsageData {
+  todayUsage: Record<string, number>;
+  totalUsage: Record<string, number>;
+}
+
+export function useTrial() {
+  const { user } = useAuth();
+  const [trial, setTrial] = useState<TrialData>({
+    trialStart: null,
+    trialEnd: null,
+    isPaid: false,
+    isTrialActive: false,
+    isTrialExpired: false,
+    daysRemaining: 0,
+    hoursRemaining: 0,
+    minutesRemaining: 0,
+    secondsRemaining: 0,
+  });
+  const [usage, setUsage] = useState<UsageData>({ todayUsage: {}, totalUsage: {} });
+  const [loading, setLoading] = useState(true);
+
+  const fetchTrial = useCallback(async () => {
+    if (!user) return;
+
+    const { data } = await supabase
+      .from("user_trials")
+      .select("*")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (data) {
+      const end = new Date(data.trial_end);
+      const now = new Date();
+      const diff = end.getTime() - now.getTime();
+      const isActive = diff > 0 && !data.is_paid;
+
+      setTrial({
+        trialStart: new Date(data.trial_start),
+        trialEnd: end,
+        isPaid: data.is_paid,
+        isTrialActive: isActive,
+        isTrialExpired: diff <= 0 && !data.is_paid,
+        daysRemaining: Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24))),
+        hoursRemaining: Math.max(0, Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))),
+        minutesRemaining: Math.max(0, Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))),
+        secondsRemaining: Math.max(0, Math.floor((diff % (1000 * 60)) / 1000)),
+      });
+    }
+    setLoading(false);
+  }, [user]);
+
+  const fetchUsage = useCallback(async () => {
+    if (!user) return;
+
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    // Today's usage
+    const { data: todayData } = await supabase
+      .from("usage_logs")
+      .select("tool_id")
+      .eq("user_id", user.id)
+      .gte("used_at", todayStart.toISOString());
+
+    const todayUsage: Record<string, number> = {};
+    todayData?.forEach((log) => {
+      todayUsage[log.tool_id] = (todayUsage[log.tool_id] || 0) + 1;
+    });
+
+    // Total usage (for home-staging)
+    const { data: totalData } = await supabase
+      .from("usage_logs")
+      .select("tool_id")
+      .eq("user_id", user.id);
+
+    const totalUsage: Record<string, number> = {};
+    totalData?.forEach((log) => {
+      totalUsage[log.tool_id] = (totalUsage[log.tool_id] || 0) + 1;
+    });
+
+    setUsage({ todayUsage, totalUsage });
+  }, [user]);
+
+  // Countdown timer
+  useEffect(() => {
+    if (!trial.trialEnd || trial.isPaid) return;
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      const diff = trial.trialEnd!.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        setTrial((prev) => ({ ...prev, isTrialActive: false, isTrialExpired: true, daysRemaining: 0, hoursRemaining: 0, minutesRemaining: 0, secondsRemaining: 0 }));
+        clearInterval(interval);
+        return;
+      }
+
+      setTrial((prev) => ({
+        ...prev,
+        daysRemaining: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hoursRemaining: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutesRemaining: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        secondsRemaining: Math.floor((diff % (1000 * 60)) / 1000),
+      }));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [trial.trialEnd, trial.isPaid]);
+
+  useEffect(() => {
+    fetchTrial();
+    fetchUsage();
+  }, [fetchTrial, fetchUsage]);
+
+  const canUseTool = (toolId: string): { allowed: boolean; used: number; max: number; limitType: string } => {
+    if (trial.isPaid) return { allowed: true, used: 0, max: Infinity, limitType: "none" };
+    if (trial.isTrialExpired) return { allowed: false, used: 0, max: 0, limitType: "expired" };
+
+    const limit = TRIAL_LIMITS[toolId as keyof TrialLimits];
+    if (!limit) return { allowed: true, used: 0, max: Infinity, limitType: "none" };
+
+    if (limit.type === "daily") {
+      const used = usage.todayUsage[toolId] || 0;
+      return { allowed: used < limit.max, used, max: limit.max, limitType: "daily" };
+    } else {
+      const used = usage.totalUsage[toolId] || 0;
+      return { allowed: used < limit.max, used, max: limit.max, limitType: "total" };
+    }
+  };
+
+  const logUsage = async (toolId: string) => {
+    if (!user) return false;
+
+    const check = canUseTool(toolId);
+    if (!check.allowed) return false;
+
+    await supabase.from("usage_logs").insert({
+      user_id: user.id,
+      tool_id: toolId,
+    });
+
+    await fetchUsage();
+    return true;
+  };
+
+  return { trial, usage, loading, canUseTool, logUsage, refetch: fetchUsage };
+}

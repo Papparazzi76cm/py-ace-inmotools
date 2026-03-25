@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { TrialProvider } from "@/contexts/TrialContext";
 import { AppLayout } from "@/components/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import AuthPage from "./pages/AuthPage";
@@ -34,21 +35,23 @@ function ProtectedRoutes() {
   if (!user) return <Navigate to="/auth" replace />;
 
   return (
-    <AppLayout>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/herramientas/descripciones" element={<DescripcionesPage />} />
-        <Route path="/herramientas/costes" element={<CostesPage />} />
-        <Route path="/herramientas/rentabilidad" element={<RentabilidadPage />} />
-        <Route path="/herramientas/consultor-legal" element={<ConsultorLegalPage />} />
-        <Route path="/herramientas/anuncios" element={<AnunciosPage />} />
-        <Route path="/herramientas/entorno" element={<EntornoPage />} />
-        <Route path="/herramientas/guiones" element={<GuionesPage />} />
-        <Route path="/herramientas/captacion" element={<CaptacionPage />} />
-        <Route path="/herramientas/:toolId" element={<ToolPlaceholder />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AppLayout>
+    <TrialProvider>
+      <AppLayout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/herramientas/descripciones" element={<DescripcionesPage />} />
+          <Route path="/herramientas/costes" element={<CostesPage />} />
+          <Route path="/herramientas/rentabilidad" element={<RentabilidadPage />} />
+          <Route path="/herramientas/consultor-legal" element={<ConsultorLegalPage />} />
+          <Route path="/herramientas/anuncios" element={<AnunciosPage />} />
+          <Route path="/herramientas/entorno" element={<EntornoPage />} />
+          <Route path="/herramientas/guiones" element={<GuionesPage />} />
+          <Route path="/herramientas/captacion" element={<CaptacionPage />} />
+          <Route path="/herramientas/:toolId" element={<ToolPlaceholder />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AppLayout>
+    </TrialProvider>
   );
 }
 
