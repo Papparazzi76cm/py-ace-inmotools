@@ -39,6 +39,7 @@ const ContratosPage = () => {
     resumen: string;
   } | null>(null);
   const { generate, loading } = useInmoAI();
+  const { profile } = useAgencyProfile();
 
   const generar = async () => {
     if (!tipoContrato || !partes.trim() || !inmueble.trim()) {
