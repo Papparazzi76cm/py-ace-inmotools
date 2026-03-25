@@ -20,7 +20,7 @@ export interface Tool {
   description: string;
   icon: typeof Image;
   path: string;
-  category: "captacion" | "comercializacion" | "analisis" | "legal" | "contenido";
+  category: "captacion" | "comercializacion" | "analisis" | "legal" | "contenido" | "formacion";
   ready: boolean;
 }
 
