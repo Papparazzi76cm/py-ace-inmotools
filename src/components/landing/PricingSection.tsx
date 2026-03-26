@@ -83,7 +83,7 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Precios{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-primary to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-yellow-300 via-primary to-amber-400 bg-clip-text text-transparent">
               simples y transparentes
             </span>
           </h2>
@@ -153,7 +153,7 @@ function PlanCard({ plan, index, onGetStarted }: { plan: any; index: number; onG
       }`}
     >
       {plan.badge && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-blue-600 via-primary to-cyan-500 text-primary-foreground text-xs font-semibold shadow-lg shadow-primary/30">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-yellow-500 via-primary to-amber-400 text-primary-foreground text-xs font-semibold shadow-lg shadow-primary/30">
           {plan.badge}
         </span>
       )}
@@ -181,7 +181,7 @@ function PlanCard({ plan, index, onGetStarted }: { plan: any; index: number; onG
         onClick={onGetStarted}
         className={`w-full rounded-xl py-5 transition-all duration-300 ${
           plan.popular
-            ? "bg-gradient-to-r from-blue-600 via-primary to-cyan-500 hover:from-blue-500 hover:to-cyan-400 shadow-lg shadow-primary/25 border-0"
+            ? "bg-gradient-to-r from-yellow-500 via-primary to-amber-400 hover:from-yellow-400 hover:to-amber-300 shadow-lg shadow-primary/25 border-0 text-background font-semibold"
             : "border-primary/30 hover:bg-primary/10 hover:border-primary/50"
         }`}
         variant={plan.popular ? "default" : "outline"}

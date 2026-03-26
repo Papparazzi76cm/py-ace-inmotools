@@ -20,7 +20,7 @@ export function TrialCountdown() {
         <p className="text-[10px] text-muted-foreground mb-2">
           Tu período de prueba ha finalizado.
         </p>
-        <Button size="sm" className="w-full text-xs h-8 bg-gradient-to-r from-blue-600 via-primary to-cyan-500 border-0 shadow-sm">
+        <Button size="sm" className="w-full text-xs h-8 bg-gradient-to-r from-yellow-500 via-primary to-amber-400 border-0 shadow-sm text-background font-semibold">
           <Crown className="h-3 w-3 mr-1" />
           Activar Plan
         </Button>

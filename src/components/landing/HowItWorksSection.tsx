@@ -43,7 +43,7 @@ const HowItWorksSection = () => {
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Tres pasos para{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-primary to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-yellow-300 via-primary to-amber-400 bg-clip-text text-transparent">
               transformar tu trabajo
             </span>
           </h2>
@@ -109,7 +109,7 @@ const HowItWorksSection = () => {
                       className="relative group"
                     >
                       {/* Glow behind image */}
-                      <div className="absolute -inset-2 bg-gradient-to-br from-primary/20 to-cyan-500/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute -inset-2 bg-gradient-to-br from-primary/20 to-amber-500/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                       <div className="relative rounded-2xl overflow-hidden border border-border/40 bg-card/50 shadow-2xl shadow-primary/5 group-hover:shadow-primary/20 transition-shadow duration-500">
                         <img
