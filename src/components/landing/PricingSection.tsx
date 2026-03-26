@@ -83,7 +83,7 @@ const PricingSection = ({ onGetStarted }: PricingSectionProps) => {
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Precios{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-primary to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-yellow-300 via-primary to-amber-400 bg-clip-text text-transparent">
               simples y transparentes
             </span>
           </h2>
