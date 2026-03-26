@@ -21,7 +21,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
       />
 
       {/* Radial vignette to black edges */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,hsl(215_45%_12%)_80%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,hsl(240_12%_24%)_80%)]" />
 
       <div className="relative z-10 max-w-5xl mx-auto text-center">
         <motion.div
