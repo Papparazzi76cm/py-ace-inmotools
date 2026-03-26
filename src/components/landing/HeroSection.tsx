@@ -12,7 +12,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
       {/* Gradient orbs with pulse */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full blur-[128px] glow-pulse bg-primary/30" />
       <div
-        className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full blur-[100px] glow-pulse bg-blue-400/20"
+        className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full blur-[100px] glow-pulse bg-yellow-400/20"
         style={{ animationDelay: "1.5s" }}
       />
       <div
