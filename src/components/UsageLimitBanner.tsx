@@ -52,7 +52,7 @@ export function UsageLimitBanner({ toolId }: UsageLimitBannerProps) {
             <p className="text-xs text-muted-foreground">Activá tu plan para seguir usando esta herramienta.</p>
           </div>
         </div>
-        <Button size="sm" className="bg-gradient-to-r from-blue-600 via-primary to-cyan-500 border-0">
+        <Button size="sm" className="bg-gradient-to-r from-yellow-500 via-primary to-amber-400 border-0 text-background font-semibold">
           <Crown className="h-3.5 w-3.5 mr-1" />
           Activar
         </Button>

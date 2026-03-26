@@ -21,7 +21,7 @@ const FeatureCards = () => {
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Todo lo que necesitás,{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-primary to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-yellow-300 via-primary to-amber-400 bg-clip-text text-transparent">
               en un solo lugar
             </span>
           </h2>
