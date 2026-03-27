@@ -55,8 +55,8 @@ export const tools: Tool[] = [
   },
   {
     id: "costes",
-    title: "Calculadora de Costes",
-    description: "Desglose completo de costes de compraventa",
+    title: "Calcula todos los costes al instante",
+    description: "Evita sorpresas y ayuda a tus clientes a planificar cada operación con precisión",
     icon: Calculator,
     path: "/herramientas/costes",
     category: "analisis",
