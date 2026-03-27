@@ -36,7 +36,7 @@ export const tools: Tool[] = [
   },
   {
     id: "descripciones",
-    title: "Generador de Descripciones",
+    title: "Olvídate del bloqueo creativo: anuncios listos en segundos",
     description: "Crea y optimiza textos inmobiliarios profesionales",
     icon: FileText,
     path: "/herramientas/descripciones",
