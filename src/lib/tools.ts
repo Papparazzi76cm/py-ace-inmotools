@@ -120,8 +120,8 @@ export const tools: Tool[] = [
   },
   {
     id: "contratos",
-    title: "Generador de Contratos",
-    description: "Contratos inmobiliarios adaptados a leyes paraguayas",
+    title: "Contratos listos en segundos",
+    description: "Genera documentos legales sin complicaciones ni errores, adaptados a leyes paraguayas",
     icon: FileSignature,
     path: "/herramientas/contratos",
     category: "legal",
