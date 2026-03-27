@@ -45,8 +45,9 @@ export const tools: Tool[] = [
   },
   {
     id: "consultor-legal",
-    title: "Consultor Jurídico",
-    description: "Resuelve dudas legales inmobiliarias de Paraguay",
+    title: "Resuelve dudas legales al instante sin complicaciones",
+    description:
+      "Asesoría legal rápida para tus operaciones inmobiliarias, totalmente adaptado al marco jurídico Paraguay",
     icon: Scale,
     path: "/herramientas/consultor-legal",
     category: "legal",
