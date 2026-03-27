@@ -129,8 +129,8 @@ export const tools: Tool[] = [
   },
   {
     id: "roleplay",
-    title: "Asistente de Role Play",
-    description: "Entrena negociación con clientes simulados por IA",
+    title: "Entrena tus ventas con clientes simulados",
+    description: "Entrena negociación con clientes simulados por IA. De agente en formación a top producer",
     icon: Users,
     path: "/herramientas/roleplay",
     category: "formacion",
