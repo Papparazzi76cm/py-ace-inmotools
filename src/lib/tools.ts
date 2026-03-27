@@ -64,8 +64,8 @@ export const tools: Tool[] = [
   },
   {
     id: "rentabilidad",
-    title: "Calculadora de Rentabilidad",
-    description: "Analiza la rentabilidad de inversiones inmobiliarias",
+    title: "Conoce la rentabilidad real al instante",
+    description: "Tusclientes sabrán que toman decisiones seguras y maximizando sus beneficios",
     icon: BarChart3,
     path: "/herramientas/rentabilidad",
     category: "analisis",
