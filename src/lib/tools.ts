@@ -27,8 +27,8 @@ export interface Tool {
 export const tools: Tool[] = [
   {
     id: "home-staging",
-    title: "Convierte cualquier inmueble en irresistible",
-    description: "Atrae compradores rápidamente con imágenes que venden. Inmuebles que enamoran al instante",
+    title: "Convertí cualquier inmueble en irresistible",
+    description: "Atraé compradores rápidamente con imágenes que venden. Inmuebles que enamoran al instante",
     icon: Image,
     path: "/herramientas/home-staging",
     category: "comercializacion",
@@ -36,7 +36,7 @@ export const tools: Tool[] = [
   },
   {
     id: "descripciones",
-    title: "Olvídate del bloqueo creativo: anuncios listos en segundos",
+    title: "Olvidate del bloqueo creativo: anuncios listos en segundos",
     description: "Crea y optimiza textos inmobiliarios profesionales",
     icon: FileText,
     path: "/herramientas/descripciones",
