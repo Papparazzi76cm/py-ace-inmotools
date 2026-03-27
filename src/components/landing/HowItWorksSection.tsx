@@ -8,7 +8,7 @@ const steps = [
   {
     number: "01",
     title: "Registrate gratis",
-    description: "Creá tu cuenta en segundos y accedé a todas las herramientas con 30 días de prueba gratuita.",
+    description: "Creá tu cuenta en segundos y accedé a todas las herramientas con 14 días de prueba gratuita.",
     image: step1Img,
   },
   {
@@ -80,13 +80,14 @@ const HowItWorksSection = () => {
                     >
                       <span
                         className="text-5xl sm:text-6xl font-black text-primary/20 block mb-2"
-                        style={{ animation: "text-glow-pulse 3s ease-in-out infinite", animationDelay: `${index * 0.8}s` }}
+                        style={{
+                          animation: "text-glow-pulse 3s ease-in-out infinite",
+                          animationDelay: `${index * 0.8}s`,
+                        }}
                       >
                         {step.number}
                       </span>
-                      <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3">
-                        {step.title}
-                      </h3>
+                      <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3">{step.title}</h3>
                       <p className="text-muted-foreground leading-relaxed max-w-md mx-auto lg:mx-0">
                         {step.description}
                       </p>
