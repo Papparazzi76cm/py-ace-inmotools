@@ -65,7 +65,7 @@ export const tools: Tool[] = [
   {
     id: "rentabilidad",
     title: "Conoce la rentabilidad real al instante",
-    description: "Tusclientes sabrán que toman decisiones seguras y maximizando sus beneficios",
+    description: "Tus clientes sabrán que toman decisiones seguras y maximizando sus beneficios",
     icon: BarChart3,
     path: "/herramientas/rentabilidad",
     category: "analisis",
