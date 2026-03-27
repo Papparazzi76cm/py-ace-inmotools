@@ -50,7 +50,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
             className="bg-gradient-to-r from-yellow-300 via-primary to-amber-400 bg-clip-text text-transparent"
             style={{ animation: "text-glow-pulse 3s ease-in-out infinite" }}
           >
-            inmobiliaria con IA
+            Convierte más leads inmobiliarios en clientes
           </span>
         </motion.h1>
 
