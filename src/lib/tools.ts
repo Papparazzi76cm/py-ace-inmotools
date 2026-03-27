@@ -47,7 +47,7 @@ export const tools: Tool[] = [
     id: "consultor-legal",
     title: "Resuelve dudas legales al instante sin complicaciones",
     description:
-      "Asesoría legal rápida para tus operaciones inmobiliarias, totalmente adaptado al marco jurídico Paraguay",
+      "Asesoría legal rápida para tus operaciones inmobiliarias, totalmente adaptado al marco jurídico paraguayo",
     icon: Scale,
     path: "/herramientas/consultor-legal",
     category: "legal",
