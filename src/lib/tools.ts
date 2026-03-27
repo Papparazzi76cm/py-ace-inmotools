@@ -27,8 +27,8 @@ export interface Tool {
 export const tools: Tool[] = [
   {
     id: "home-staging",
-    title: "Home Staging IA",
-    description: "Edita imágenes de inmuebles con inteligencia artificial",
+    title: "Convierte cualquier inmueble en irresistible",
+    description: "Atrae compradores rápidamente con imágenes que venden. Inmuebles que enamoran al instante",
     icon: Image,
     path: "/herramientas/home-staging",
     category: "comercializacion",
