@@ -43,7 +43,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight mb-6"
         >
           <span className="text-foreground">
-            Automatiza tu negocio inmobiliario con IA y capta más clientes sin aumentar tu equipo
+            Automatiza tu negocio inmobiliario con IA y multiplica tu productividad
           </span>
           <br />
           <span
