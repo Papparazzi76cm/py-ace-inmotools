@@ -20,9 +20,9 @@ const FeatureCards = () => {
             <Cpu className="h-3 w-3" /> Herramientas
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Deja de perder tiempo en tareas que no te hacen vender,{" "}
+            Deja de perder tiempo en tareas{" "}
             <span className="bg-gradient-to-r from-yellow-300 via-primary to-amber-400 bg-clip-text text-transparent">
-              en un solo lugar
+              que no te hacen vender más
             </span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
