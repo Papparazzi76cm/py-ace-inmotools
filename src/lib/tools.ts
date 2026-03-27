@@ -73,8 +73,8 @@ export const tools: Tool[] = [
   },
   {
     id: "informes",
-    title: "Informes de Valoración",
-    description: "Genera informes profesionales personalizados",
+    title: "Informes profesionales en minutos",
+    description: "Genera informes profesionales personalizados en 1 solo clic",
     icon: FileSpreadsheet,
     path: "/herramientas/informes",
     category: "comercializacion",
