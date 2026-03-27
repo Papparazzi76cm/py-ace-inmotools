@@ -20,7 +20,7 @@ const FeatureCards = () => {
             <Cpu className="h-3 w-3" /> Herramientas
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Todo lo que necesitás,{" "}
+            Deja de perder tiempo en tareas que no te hacen vender,{" "}
             <span className="bg-gradient-to-r from-yellow-300 via-primary to-amber-400 bg-clip-text text-transparent">
               en un solo lugar
             </span>
@@ -81,9 +81,7 @@ const FeatureCards = () => {
                 <h3 className="text-foreground font-semibold mb-1.5 group-hover:text-primary transition-colors duration-300">
                   {tool.title}
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {tool.description}
-                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{tool.description}</p>
               </div>
             </motion.div>
           ))}
