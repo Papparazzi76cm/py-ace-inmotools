@@ -101,8 +101,8 @@ export const tools: Tool[] = [
   },
   {
     id: "guiones",
-    title: "Guiones de Vídeo",
-    description: "Scripts para Reels, TikTok y YouTube",
+    title: "Crea guiones de videos que venden sin esfuerzo",
+    description: "Scripts para Reels, TikTok y YouTube. Guiones listos para captar la atención de tus clientes",
     icon: Video,
     path: "/herramientas/guiones",
     category: "contenido",
@@ -110,8 +110,9 @@ export const tools: Tool[] = [
   },
   {
     id: "captacion",
-    title: "Asistente de Captación",
-    description: "Scripts y argumentarios para captar propietarios",
+    title: "Consigue nuevos clientes sin esfuerzo",
+    description:
+      "Scripts y argumentarios para captar propietarios. Asistente inteligente que impulsa tu captación inmobiliaria",
     icon: UserPlus,
     path: "/herramientas/captacion",
     category: "captacion",
