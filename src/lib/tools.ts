@@ -91,8 +91,9 @@ export const tools: Tool[] = [
   },
   {
     id: "entorno",
-    title: "Descripción de Entorno",
-    description: "Describe la zona y servicios cercanos al inmueble",
+    title: "Descubre el entorno antes de vender",
+    description:
+      "Describe la zona y servicios cercanos al inmueble. Información detallada que convence a los compradores",
     icon: MapPin,
     path: "/herramientas/entorno",
     category: "contenido",
