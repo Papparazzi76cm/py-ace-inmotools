@@ -5,7 +5,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Copy, FileText, Sparkles, Loader2 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Copy, FileText, Sparkles, Loader2, Megaphone } from "lucide-react";
 import { toast } from "sonner";
 import { useInmoAI } from "@/hooks/useInmoAI";
 import { UsageLimitBanner } from "@/components/UsageLimitBanner";
@@ -24,16 +25,18 @@ const DescripcionesPage = () => {
   const [habitaciones, setHabitaciones] = useState("");
   const [superficie, setSuperficie] = useState("");
   const [ubicacion, setUbicacion] = useState("");
+  const [precio, setPrecio] = useState("");
   const [extras, setExtras] = useState("");
-  const [resultado, setResultado] = useState<{ corta: string; larga: string; redes: string } | null>(null);
+  const [resultadoDesc, setResultadoDesc] = useState<{ corta: string; larga: string; redes: string } | null>(null);
+  const [resultadoAnuncios, setResultadoAnuncios] = useState<{ facebook: string; instagram: string; portal: string } | null>(null);
   const { generate, loading } = useInmoAI();
 
-  const generar = async () => {
+  const generarDescripciones = async () => {
     const result = await generate("descripciones", {
       tipo, estilo, habitaciones, superficie, ubicacion, extras,
     });
     if (result) {
-      setResultado({
+      setResultadoDesc({
         corta: result.corta || "",
         larga: result.larga || "",
         redes: result.redes || "",
@@ -41,9 +44,22 @@ const DescripcionesPage = () => {
     }
   };
 
+  const generarAnuncios = async () => {
+    const result = await generate("anuncios", {
+      tipo, precio, ubicacion, caracteristicas: extras,
+    });
+    if (result) {
+      setResultadoAnuncios({
+        facebook: result.facebook || "",
+        instagram: result.instagram || "",
+        portal: result.portal || "",
+      });
+    }
+  };
+
   const copiar = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
-    toast.success(`${label} copiada al portapapeles`);
+    toast.success(`${label} copiado al portapapeles`);
   };
 
   return (
@@ -51,11 +67,12 @@ const DescripcionesPage = () => {
       <UsageLimitBanner toolId="descripciones" />
       <div className="flex items-center gap-2 mb-6">
         <FileText className="h-5 w-5 text-primary" />
-        <h1 className="text-2xl font-semibold">Generador de Descripciones</h1>
+        <h1 className="text-2xl font-semibold">Descripciones y Anuncios</h1>
         <Sparkles className="h-4 w-4 text-primary" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Formulario compartido */}
         <Card className="glass-card">
           <CardHeader>
             <CardTitle className="text-base">Datos del Inmueble</CardTitle>
@@ -80,6 +97,10 @@ const DescripcionesPage = () => {
               <Input placeholder="Asunción, Barrio..." value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} />
             </div>
             <div>
+              <Label>Precio</Label>
+              <Input placeholder="USD 85.000" value={precio} onChange={(e) => setPrecio(e.target.value)} />
+            </div>
+            <div>
               <Label>Estilo de redacción</Label>
               <Select value={estilo} onValueChange={setEstilo}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
@@ -94,24 +115,55 @@ const DescripcionesPage = () => {
               <Label>Extras / Características</Label>
               <Textarea placeholder="Piscina, garaje doble, vista panorámica..." value={extras} onChange={(e) => setExtras(e.target.value)} rows={3} />
             </div>
-            <Button onClick={generar} className="w-full" disabled={loading}>
-              {loading ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Generando con IA...</> : "Generar con IA"}
-            </Button>
+            <div className="grid grid-cols-2 gap-3">
+              <Button onClick={generarDescripciones} className="w-full" disabled={loading}>
+                {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <FileText className="h-4 w-4 mr-2" />}
+                Descripciones
+              </Button>
+              <Button onClick={generarAnuncios} className="w-full" disabled={loading} variant="outline">
+                {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Megaphone className="h-4 w-4 mr-2" />}
+                Anuncios
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
+        {/* Resultados con tabs */}
         <div className="space-y-4">
-          {resultado ? (
-            <>
-              <ResultCard title="Versión Corta" text={resultado.corta} onCopy={() => copiar(resultado.corta, "Versión corta")} />
-              <ResultCard title="Versión Larga" text={resultado.larga} onCopy={() => copiar(resultado.larga, "Versión larga")} />
-              <ResultCard title="Redes Sociales" text={resultado.redes} onCopy={() => copiar(resultado.redes, "Versión redes")} />
-            </>
+          {(resultadoDesc || resultadoAnuncios) ? (
+            <Tabs defaultValue={resultadoDesc ? "descripciones" : "anuncios"}>
+              <TabsList className="w-full">
+                <TabsTrigger value="descripciones" className="flex-1" disabled={!resultadoDesc}>
+                  <FileText className="h-3.5 w-3.5 mr-1.5" /> Descripciones
+                </TabsTrigger>
+                <TabsTrigger value="anuncios" className="flex-1" disabled={!resultadoAnuncios}>
+                  <Megaphone className="h-3.5 w-3.5 mr-1.5" /> Anuncios
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="descripciones" className="space-y-4 mt-4">
+                {resultadoDesc && (
+                  <>
+                    <ResultCard title="Versión Corta" text={resultadoDesc.corta} onCopy={() => copiar(resultadoDesc.corta, "Versión corta")} />
+                    <ResultCard title="Versión Larga" text={resultadoDesc.larga} onCopy={() => copiar(resultadoDesc.larga, "Versión larga")} />
+                    <ResultCard title="Redes Sociales" text={resultadoDesc.redes} onCopy={() => copiar(resultadoDesc.redes, "Versión redes")} />
+                  </>
+                )}
+              </TabsContent>
+              <TabsContent value="anuncios" className="space-y-4 mt-4">
+                {resultadoAnuncios && (
+                  <>
+                    <ResultCard title="Facebook Ads" text={resultadoAnuncios.facebook} onCopy={() => copiar(resultadoAnuncios.facebook, "Facebook")} />
+                    <ResultCard title="Instagram" text={resultadoAnuncios.instagram} onCopy={() => copiar(resultadoAnuncios.instagram, "Instagram")} />
+                    <ResultCard title="Portal Inmobiliario" text={resultadoAnuncios.portal} onCopy={() => copiar(resultadoAnuncios.portal, "Portal")} />
+                  </>
+                )}
+              </TabsContent>
+            </Tabs>
           ) : (
             <Card className="glass-card">
               <CardContent className="p-8 text-center text-muted-foreground">
                 <FileText className="h-10 w-10 mx-auto mb-3 opacity-30" />
-                <p className="text-sm">Completa los datos y presiona "Generar" para crear descripciones con IA.</p>
+                <p className="text-sm">Completá los datos y presioná "Descripciones" o "Anuncios" para generar textos con IA.</p>
               </CardContent>
             </Card>
           )}
