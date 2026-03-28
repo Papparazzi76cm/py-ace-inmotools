@@ -5,7 +5,6 @@ import {
   Calculator,
   BarChart3,
   FileSpreadsheet,
-  Megaphone,
   MapPin,
   Video,
   UserPlus,
@@ -28,7 +27,7 @@ export const tools: Tool[] = [
   {
     id: "home-staging",
     title: "Convertí cualquier inmueble en irresistible",
-    description: "Atraé compradores rápidamente con imágenes que venden. Inmuebles que enamoran al instante",
+    description: "Atraé compradores rápido con imágenes que venden. Inmuebles que enamoran al instante",
     icon: Image,
     path: "/herramientas/home-staging",
     category: "comercializacion",
@@ -36,8 +35,8 @@ export const tools: Tool[] = [
   },
   {
     id: "descripciones",
-    title: "Olvidate del bloqueo creativo: anuncios listos en segundos",
-    description: "Crea y optimiza textos inmobiliarios profesionales",
+    title: "Olvidate del bloqueo creativo: textos y anuncios listos",
+    description: "Creá descripciones y anuncios profesionales para portales y redes sociales en segundos",
     icon: FileText,
     path: "/herramientas/descripciones",
     category: "comercializacion",
@@ -45,9 +44,9 @@ export const tools: Tool[] = [
   },
   {
     id: "consultor-legal",
-    title: "Resuelve dudas legales al instante sin complicaciones",
+    title: "Resolvé dudas legales al instante sin complicaciones",
     description:
-      "Asesoría legal rápida para tus operaciones inmobiliarias, totalmente adaptado al marco jurídico paraguayo",
+      "Asesoría legal rápida para tus operaciones inmobiliarias, adaptada al marco jurídico paraguayo",
     icon: Scale,
     path: "/herramientas/consultor-legal",
     category: "legal",
@@ -55,8 +54,8 @@ export const tools: Tool[] = [
   },
   {
     id: "costes",
-    title: "Calcula todos los costes al instante",
-    description: "Evita sorpresas y ayuda a tus clientes a planificar cada operación con precisión",
+    title: "Calculá todos los costes al instante",
+    description: "Evitá sorpresas y ayudá a tus clientes a planificar cada operación con precisión",
     icon: Calculator,
     path: "/herramientas/costes",
     category: "analisis",
@@ -64,8 +63,8 @@ export const tools: Tool[] = [
   },
   {
     id: "rentabilidad",
-    title: "Conoce la rentabilidad real al instante",
-    description: "Tus clientes sabrán que toman decisiones seguras y maximizando sus beneficios",
+    title: "Conocé la rentabilidad real al instante",
+    description: "Tus clientes van a saber que toman decisiones seguras maximizando sus beneficios",
     icon: BarChart3,
     path: "/herramientas/rentabilidad",
     category: "analisis",
@@ -74,26 +73,17 @@ export const tools: Tool[] = [
   {
     id: "informes",
     title: "Informes profesionales en minutos",
-    description: "Genera informes profesionales personalizados en 1 solo clic",
+    description: "Generá informes profesionales personalizados en 1 solo clic",
     icon: FileSpreadsheet,
     path: "/herramientas/informes",
     category: "comercializacion",
     ready: true,
   },
   {
-    id: "anuncios",
-    title: "Generador de Anuncios",
-    description: "Crea anuncios para redes sociales y portales",
-    icon: Megaphone,
-    path: "/herramientas/anuncios",
-    category: "contenido",
-    ready: true,
-  },
-  {
     id: "entorno",
-    title: "Descubre el entorno antes de vender",
+    title: "Descubrí el entorno antes de vender",
     description:
-      "Describe la zona y servicios cercanos al inmueble. Información detallada que convence a los compradores",
+      "Describí la zona y servicios cercanos al inmueble. Información detallada que convence a los compradores",
     icon: MapPin,
     path: "/herramientas/entorno",
     category: "contenido",
@@ -101,7 +91,7 @@ export const tools: Tool[] = [
   },
   {
     id: "guiones",
-    title: "Crea guiones de videos que venden sin esfuerzo",
+    title: "Creá guiones de videos que venden sin esfuerzo",
     description: "Scripts para Reels, TikTok y YouTube. Guiones listos para captar la atención de tus clientes",
     icon: Video,
     path: "/herramientas/guiones",
@@ -110,9 +100,9 @@ export const tools: Tool[] = [
   },
   {
     id: "captacion",
-    title: "Consigue nuevos clientes sin esfuerzo",
+    title: "Conseguí nuevos clientes sin esfuerzo",
     description:
-      "Scripts y argumentarios para captar propietarios. Asistente inteligente que impulsa tu captación inmobiliaria",
+      "Scripts y argumentarios para captar propietarios. Asistente inteligente que impulsa tu captación",
     icon: UserPlus,
     path: "/herramientas/captacion",
     category: "captacion",
@@ -121,7 +111,7 @@ export const tools: Tool[] = [
   {
     id: "contratos",
     title: "Contratos listos en segundos",
-    description: "Genera documentos legales sin complicaciones ni errores, adaptados a leyes paraguayas",
+    description: "Generá documentos legales sin complicaciones ni errores, adaptados a leyes paraguayas",
     icon: FileSignature,
     path: "/herramientas/contratos",
     category: "legal",
@@ -129,8 +119,8 @@ export const tools: Tool[] = [
   },
   {
     id: "roleplay",
-    title: "Entrena tus ventas con clientes simulados",
-    description: "Entrena negociación con clientes simulados por IA. De agente en formación a top producer",
+    title: "Entrená tus ventas con clientes simulados",
+    description: "Entrená negociación con clientes simulados por IA. De agente en formación a top producer",
     icon: Users,
     path: "/herramientas/roleplay",
     category: "formacion",
