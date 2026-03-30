@@ -56,7 +56,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed px-2"
+          className="text-sm sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-10 leading-relaxed px-2"
         >
           Suite con 11 herramientas inteligentes en una sola plataforma. Captación, comercialización, análisis legal y
           contenido — todo lo que necesitás como agente inmobiliario en Paraguay.
