@@ -8,7 +8,7 @@ interface HeroSectionProps {
 
 const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 pt-20 pb-16 overflow-hidden">
+    <section className="relative min-h-[calc(100dvh-1rem)] flex items-center justify-center px-4 pt-16 sm:pt-20 pb-8 sm:pb-16 overflow-hidden">
       {/* Gradient orbs with pulse */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full blur-[128px] glow-pulse bg-primary/30" />
       <div
@@ -28,7 +28,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-6"
+          className="mb-4 sm:mb-6"
         >
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/40 bg-primary/10 text-primary text-sm font-medium backdrop-blur-sm glow-pulse">
             <Zap className="h-3.5 w-3.5" />
@@ -40,7 +40,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight mb-6"
+          className="text-2xl sm:text-5xl lg:text-7xl font-bold tracking-tight mb-4 sm:mb-6"
         >
           <span className="text-foreground">Automatiza tu negocio inmobiliario con IA</span>
           <br />
@@ -56,7 +56,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed px-2"
+          className="text-sm sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-10 leading-relaxed px-2"
         >
           Suite con 11 herramientas inteligentes en una sola plataforma. Captación, comercialización, análisis legal y
           contenido — todo lo que necesitás como agente inmobiliario en Paraguay.
@@ -92,7 +92,7 @@ const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.55 }}
-          className="mt-12 sm:mt-16 grid grid-cols-3 gap-4 sm:gap-8 max-w-lg mx-auto"
+          className="mt-8 sm:mt-16 grid grid-cols-3 gap-4 sm:gap-8 max-w-lg mx-auto"
         >
           {[
             { value: "10+", label: "Herramientas IA" },
