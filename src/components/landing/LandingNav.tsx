@@ -12,7 +12,7 @@ const LandingNav = ({ onGetStarted }: LandingNavProps) => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/40"
+      className="fixed top-0 left-0 right-0 z-50 border-b border-transparent"
     >
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center sm:justify-between px-3 sm:px-4 py-2 sm:py-0 sm:h-16 gap-1 sm:gap-0">
         <div className="flex items-center justify-between w-full sm:w-auto">
