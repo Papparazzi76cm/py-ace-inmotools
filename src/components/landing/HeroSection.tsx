@@ -8,7 +8,7 @@ interface HeroSectionProps {
 
 const HeroSection = ({ onGetStarted }: HeroSectionProps) => {
   return (
-    <section className="relative min-h-[calc(100dvh-1rem)] flex items-center justify-center px-4 pt-16 sm:pt-20 pb-8 sm:pb-16 overflow-hidden">
+    <section className="relative min-h-[calc(100dvh-1rem)] flex items-center justify-center px-4 pt-24 sm:pt-28 pb-8 sm:pb-16 overflow-hidden">
       {/* Gradient orbs with pulse */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full blur-[128px] glow-pulse bg-primary/30" />
       <div
